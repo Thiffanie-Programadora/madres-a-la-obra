@@ -26,6 +26,7 @@ function AppContent() {
   const [accessibility, setAccessibility] = useState({
     fontSize: 'normal',
     highContrast: false,
+    darkMode: false,
     lescoEnabled: true
   });
 
@@ -98,10 +99,14 @@ function AppContent() {
     return '';
   };
 
+  const getThemeClass = () => {
+    if (accessibility.highContrast) return 'contrast-125 bg-gray-900 text-white';
+    if (accessibility.darkMode) return 'dark bg-slate-950 text-slate-100';
+    return 'bg-[#F8F9FA] text-[#2D3748]';
+  };
+
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-all duration-200 ${
-      accessibility.highContrast ? 'contrast-125 bg-gray-900 text-white' : 'bg-[#F8F9FA] text-[#2D3748]'
-    } ${getFontSizeClass()}`}>
+    <div className={`min-h-screen flex flex-col font-sans transition-all duration-300 ${getThemeClass()} ${getFontSizeClass()}`}>
       
       {/* Header / Navbar */}
       <Navbar 

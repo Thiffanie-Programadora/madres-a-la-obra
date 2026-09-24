@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, User, PlusCircle, Volume2, Eye, Type, Menu, X, Shield, Sparkles } from 'lucide-react';
+import { Search, User, PlusCircle, Volume2, Eye, Type, Menu, X, Shield, Sparkles, Sun, Moon } from 'lucide-react';
 
 export default function Navbar({ currentView, setCurrentView, accessibility, setAccessibility, onOpenPostModal, onOpenLoginModal }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -12,6 +12,10 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
 
   const toggleContrast = () => {
     setAccessibility(prev => ({ ...prev, highContrast: !prev.highContrast }));
+  };
+
+  const toggleDarkMode = () => {
+    setAccessibility(prev => ({ ...prev, darkMode: !prev.darkMode }));
   };
 
   const toggleLesco = () => {
@@ -44,6 +48,16 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
             >
               <Type className="w-3.5 h-3.5" />
               <span>Letra: {accessibility.fontSize === 'normal' ? 'A' : accessibility.fontSize === 'large' ? 'A+' : 'A++'}</span>
+            </button>
+
+            {/* Dark Mode Toggle */}
+            <button
+              onClick={toggleDarkMode}
+              title="Cambiar Modo Claro / Oscuro"
+              className={`flex items-center gap-1 hover:text-[#A3E4D7] transition-colors font-medium px-2 py-0.5 rounded ${accessibility.darkMode ? 'bg-[#A3E4D7] text-[#7B008A] font-bold' : 'bg-white/10'}`}
+            >
+              {accessibility.darkMode ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
+              <span>{accessibility.darkMode ? 'Modo Claro' : 'Modo Oscuro'}</span>
             </button>
 
             {/* Contrast Toggle */}
