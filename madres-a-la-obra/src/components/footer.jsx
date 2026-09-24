@@ -24,13 +24,7 @@ export default function Footer({ setCurrentView }) {
           {/* Brand Col */}
           <div className="space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-[#E6007E] to-[#7B008A] flex items-center justify-center text-white shadow-md">
-                <span className="text-xl font-black">M</span>
-                <Heart className="w-4 h-4 text-[#A3E4D7] fill-[#A3E4D7] -ml-1 -mt-2" />
-              </div>
-              <span className="text-2xl font-extrabold text-white tracking-tight">
-                Madres a la Obra
-              </span>
+              <img src="/logo.png" alt="Madres a la Obra" className="h-16 w-auto object-contain bg-white rounded-full p-1 shadow-md" />
             </div>
             <p className="text-gray-300 text-sm leading-relaxed">
               Plataforma digital inclusiva para madres cuidadoras. Fomentamos la economía colaborativa, la capacitación flexible y la sororidad a través del intercambio directo de conocimientos.

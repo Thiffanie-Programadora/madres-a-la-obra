@@ -10,7 +10,7 @@ export default function MamaBot({ workshops, onSelectWorkshop }) {
     {
       id: 1,
       sender: 'bot',
-      text: '¡Hola, mamita! 🎀 Soy MamáBot / SkillAI. Puedo ayudarte a conciliar tus tiempos con la siesta de tus peques, buscar talleres adaptados con LESCO o proponerte trueques compatibles.',
+      text: '¡Hola! Soy MamáBot / SkillAI. Puedo ayudarte a conciliar tus tiempos con la siesta de tus peques, buscar talleres adaptados con LESCO o proponerte trueques compatibles.',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -18,10 +18,10 @@ export default function MamaBot({ workshops, onSelectWorkshop }) {
   const [isTyping, setIsTyping] = useState(false);
 
   const quickPrompts = [
-    { label: '👶 Siesta Escolar (10am - 12pm)', text: 'Busco talleres en horario de 10:00 a 12:00 para la siesta o jornada escolar.' },
-    { label: '🤟 Talleres LESCO', text: 'Muéstrame talleres que incluyan intérprete LESCO o adaptaciones accesibles.' },
-    { label: '🤝 ¿Cómo funciona el Trueque?', text: 'Explícame cómo puedo intercambiar mis habilidades sin gastar dinero.' },
-    { label: '🍰 Talleres de Repostería o Costura', text: 'Quiero ver talleres de manualidades, confección o repostería fácil.' }
+    { label: 'Siesta Escolar (10am - 12pm)', text: 'Busco talleres en horario de 10:00 a 12:00 para la siesta o jornada escolar.' },
+    { label: 'Talleres LESCO', text: 'Muéstrame talleres que incluyan intérprete LESCO o adaptaciones accesibles.' },
+    { label: '¿Cómo funciona el Trueque?', text: 'Explícame cómo puedo intercambiar mis habilidades sin gastar dinero.' },
+    { label: 'Talleres de Repostería o Costura', text: 'Quiero ver talleres de manualidades, confección o repostería fácil.' }
   ];
 
   const handleSendMessage = (textToSend) => {
@@ -76,8 +76,8 @@ export default function MamaBot({ workshops, onSelectWorkshop }) {
           onClick={() => setIsOpen(true)}
           className="relative group bg-gradient-to-r from-[#E6007E] to-[#7B008A] text-white p-4 rounded-full shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 flex items-center justify-center border-2 border-white"
         >
-          <div className="absolute -top-2 -right-1 bg-[#A3E4D7] text-[#7B008A] text-[10px] font-black px-2 py-0.5 rounded-full shadow border border-white animate-bounce">
-            SkillAI 🤖
+          <div className="absolute -top-2 -right-1 bg-[#A3E4D7] text-[#7B008A] text-[10px] font-black px-2 py-0.5 rounded-full shadow border border-white">
+            SkillAI
           </div>
           <Bot className="w-7 h-7 text-[#A3E4D7]" />
         </button>

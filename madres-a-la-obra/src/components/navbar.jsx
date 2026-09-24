@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, Search, User, PlusCircle, Volume2, Eye, Type, Menu, X, Shield, Sparkles } from 'lucide-react';
+import { Search, User, PlusCircle, Volume2, Eye, Type, Menu, X, Shield, Sparkles } from 'lucide-react';
 
 export default function Navbar({ currentView, setCurrentView, accessibility, setAccessibility, onOpenPostModal, onOpenLoginModal }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,7 +19,7 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
   };
 
   return (
-    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-pink-100 shadow-sm transition-all duration-200">
+    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm transition-all duration-200">
       {/* Top Accessibility Bar */}
       <div className="bg-gradient-to-r from-[#7B008A] to-[#E6007E] text-white text-xs py-1.5 px-4">
         <div className="max-w-7xl mx-auto flex flex-wrap justify-between items-center gap-2">
@@ -29,8 +29,8 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
               Plataforma Inclusiva para Madres Cuidadoras
             </span>
             {accessibility.lescoEnabled && (
-              <span className="bg-[#A3E4D7] text-[#7B008A] font-bold px-2 py-0.5 rounded-full text-[10px] animate-pulse">
-                Intérprete LESCO Activo 🤟
+              <span className="bg-[#A3E4D7] text-[#7B008A] font-bold px-2 py-0.5 rounded-full text-[10px]">
+                Intérprete LESCO Activo
               </span>
             )}
           </div>
@@ -81,23 +81,16 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           
-          {/* Logo */}
+          {/* Custom Logo Image replacing standard text */}
           <div 
             className="flex items-center gap-3 cursor-pointer group"
             onClick={() => setCurrentView('home')}
           >
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-tr from-[#E6007E] to-[#7B008A] flex items-center justify-center text-white shadow-md shadow-pink-500/20 group-hover:scale-105 transition-transform duration-200">
-              <span className="text-xl font-black">M</span>
-              <Heart className="w-4 h-4 text-[#A3E4D7] fill-[#A3E4D7] -ml-1 -mt-2 animate-bounce" />
-            </div>
-            <div>
-              <span className="text-xl sm:text-2xl font-extrabold bg-gradient-to-r from-[#7B008A] via-[#E6007E] to-[#7B008A] bg-clip-text text-transparent tracking-tight">
-                Madres a la Obra
-              </span>
-              <span className="block text-[11px] font-medium text-pink-600 -mt-1 tracking-wider uppercase">
-                🎀 Red Inclusiva & Skill-Swap
-              </span>
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="Madres a la Obra" 
+              className="h-16 w-auto object-contain transition-transform duration-200 group-hover:scale-105"
+            />
           </div>
 
           {/* Nav Links Desktop */}

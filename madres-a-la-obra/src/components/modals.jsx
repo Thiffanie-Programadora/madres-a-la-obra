@@ -108,7 +108,7 @@ export function SwapModal({ isOpen, onClose, onAddSwap }) {
 
         <div className="text-center space-y-2">
           <div className="w-12 h-12 rounded-2xl bg-[#A3E4D7] text-[#7B008A] flex items-center justify-center mx-auto shadow-md font-black">
-            🤝
+            <Sparkles className="w-6 h-6 text-[#7B008A]" />
           </div>
           <h3 className="text-2xl font-black text-gray-900">Publicar Propuesta de Trueque</h3>
           <p className="text-xs text-gray-500">Conecta sin dinero con otras madres dispuestas a aprender y enseñar.</p>
@@ -191,7 +191,7 @@ export function WorkshopDetailModal({ workshop, onClose, onRegister }) {
           <div className="flex items-center gap-2">
             {workshop.accessibility.map((acc, i) => (
               <span key={i} className="text-[10px] bg-purple-50 text-[#7B008A] font-bold px-2.5 py-1 rounded-full border border-purple-200">
-                🤟 {acc}
+                {acc}
               </span>
             ))}
           </div>

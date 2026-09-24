@@ -57,7 +57,7 @@ export default function HomeView({
             {/* Ribbon Badge */}
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-pink-200 shadow-sm text-xs font-bold text-[#E6007E]">
               <span className="w-2.5 h-2.5 rounded-full bg-[#E6007E] animate-ping" />
-              🎀 Comunidad Inclusiva de Aprendizaje Directo
+              Comunidad Inclusiva de Aprendizaje Directo
             </div>
 
             {/* Main Headline */}
