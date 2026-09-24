@@ -94,9 +94,9 @@ function AppContent() {
   };
 
   const getFontSizeClass = () => {
-    if (accessibility.fontSize === 'large') return 'text-lg';
-    if (accessibility.fontSize === 'xlarge') return 'text-xl';
-    return '';
+    if (accessibility.fontSize === 'large') return 'font-scale-large';
+    if (accessibility.fontSize === 'xlarge') return 'font-scale-xlarge';
+    return 'font-scale-normal';
   };
 
   const getThemeClass = () => {

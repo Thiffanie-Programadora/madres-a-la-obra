@@ -4,10 +4,14 @@ import { Search, User, PlusCircle, Volume2, Eye, Type, Menu, X, Shield, Sparkles
 export default function Navbar({ currentView, setCurrentView, accessibility, setAccessibility, onOpenPostModal, onOpenLoginModal }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
-  const toggleFontSize = () => {
-    const sizes = ['normal', 'large', 'xlarge'];
-    const nextIdx = (sizes.indexOf(accessibility.fontSize) + 1) % sizes.length;
-    setAccessibility(prev => ({ ...prev, fontSize: sizes[nextIdx] }));
+  const increaseFontSize = () => {
+    if (accessibility.fontSize === 'normal') setAccessibility(prev => ({ ...prev, fontSize: 'large' }));
+    else if (accessibility.fontSize === 'large') setAccessibility(prev => ({ ...prev, fontSize: 'xlarge' }));
+  };
+
+  const decreaseFontSize = () => {
+    if (accessibility.fontSize === 'xlarge') setAccessibility(prev => ({ ...prev, fontSize: 'large' }));
+    else if (accessibility.fontSize === 'large') setAccessibility(prev => ({ ...prev, fontSize: 'normal' }));
   };
 
   const toggleContrast = () => {
@@ -40,15 +44,32 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
           </div>
 
           <div className="flex items-center space-x-3">
-            {/* Font Size Toggle */}
-            <button
-              onClick={toggleFontSize}
-              title="Cambiar tamaño de fuente"
-              className="flex items-center gap-1 hover:text-[#A3E4D7] transition-colors font-medium px-2 py-0.5 rounded bg-white/10"
-            >
-              <Type className="w-3.5 h-3.5" />
-              <span>Letra: {accessibility.fontSize === 'normal' ? 'A' : accessibility.fontSize === 'large' ? 'A+' : 'A++'}</span>
-            </button>
+            {/* Font Size A- / A+ Controls */}
+            <div className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded">
+              <span className="font-semibold mr-1 flex items-center gap-1">
+                <Type className="w-3.5 h-3.5" />
+                <span>Letra:</span>
+              </span>
+              <button
+                onClick={decreaseFontSize}
+                disabled={accessibility.fontSize === 'normal'}
+                title="Disminuir tamaño de letra"
+                className="px-1.5 rounded hover:bg-white/20 disabled:opacity-40 font-bold transition-all"
+              >
+                A-
+              </button>
+              <span className="text-[10px] bg-[#A3E4D7] text-[#7B008A] font-extrabold px-1.5 py-0.5 rounded-full">
+                {accessibility.fontSize === 'normal' ? '100%' : accessibility.fontSize === 'large' ? '115%' : '130% Macrotipo'}
+              </span>
+              <button
+                onClick={increaseFontSize}
+                disabled={accessibility.fontSize === 'xlarge'}
+                title="Aumentar tamaño de letra (Macrotipo para visión reducida)"
+                className="px-1.5 rounded hover:bg-white/20 disabled:opacity-40 font-bold transition-all"
+              >
+                A+
+              </button>
+            </div>
 
             {/* Dark Mode Toggle */}
             <button
