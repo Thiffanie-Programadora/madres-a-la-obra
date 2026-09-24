@@ -1,122 +1,149 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import Navbar from './components/navbar';
+import Footer from './components/footer';
+import HomeView from './views/homeView';
+import AdminDashboard from './views/adminDashboard';
+import SkillSwapView from './views/skillSwapView';
+import HowItWorksView from './views/howItWorksView';
+import MamaBot from './components/mamabot';
+import { LoginModal, SwapModal, WorkshopDetailModal } from './components/modals';
 
-function App() {
-  const [count, setCount] = useState(0)
+import { INITIAL_WORKSHOPS, INITIAL_SWAP_REQUESTS } from './data/mockData';
+
+export default function App() {
+  // Navigation View State
+  const [currentView, setCurrentView] = useState('home'); // 'home' | 'talleres' | 'como-funciona' | 'skill-swap' | 'admin'
+
+  // Accessibility State
+  const [accessibility, setAccessibility] = useState({
+    fontSize: 'normal', // 'normal' | 'large' | 'xlarge'
+    highContrast: false,
+    lescoEnabled: true
+  });
+
+  // Data State
+  const [workshops, setWorkshops] = useState(INITIAL_WORKSHOPS);
+  const [swapRequests, setSwapRequests] = useState(INITIAL_SWAP_REQUESTS);
+
+  // Modal Controls
+  const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isSwapOpen, setIsSwapOpen] = useState(false);
+  const [selectedWorkshopModal, setSelectedWorkshopModal] = useState(null);
+
+  // Registration handler for Workshop Detail Modal
+  const handleWorkshopRegistration = (workshop) => {
+    setWorkshops(prev => prev.map(w => {
+      if (w.id === workshop.id && w.spotsLeft > 0) {
+        return { ...w, spotsLeft: w.spotsLeft - 1 };
+      }
+      return w;
+    }));
+    alert(`¡Inscripción exitosa al taller "${workshop.title}"! Te hemos enviado el link de confirmación.`);
+    setSelectedWorkshopModal(null);
+  };
+
+  const handleAddSwap = (newSwap) => {
+    setSwapRequests([newSwap, ...swapRequests]);
+  };
+
+  // Font class dynamic helper
+  const getFontSizeClass = () => {
+    if (accessibility.fontSize === 'large') return 'text-lg';
+    if (accessibility.fontSize === 'xlarge') return 'text-xl';
+    return '';
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className={`min-h-screen flex flex-col font-sans transition-all duration-200 ${
+      accessibility.highContrast ? 'contrast-125 bg-gray-900 text-white' : 'bg-[#F8F9FA] text-[#2D3748]'
+    } ${getFontSizeClass()}`}>
+      
+      {/* Header / Navbar */}
+      <Navbar 
+        currentView={currentView}
+        setCurrentView={setCurrentView}
+        accessibility={accessibility}
+        setAccessibility={setAccessibility}
+        onOpenPostModal={() => setIsSwapOpen(true)}
+        onOpenLoginModal={() => setIsLoginOpen(true)}
+      />
 
-      <div className="ticks"></div>
+      {/* Main View Router */}
+      <div className="flex-1">
+        {currentView === 'home' && (
+          <HomeView 
+            workshops={workshops}
+            swapRequests={swapRequests}
+            onSelectWorkshop={(w) => setSelectedWorkshopModal(w)}
+            onOpenSwapModal={() => setIsSwapOpen(true)}
+            onOpenPostModal={() => setIsSwapOpen(true)}
+            setCurrentView={setCurrentView}
+          />
+        )}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        {currentView === 'talleres' && (
+          <HomeView 
+            workshops={workshops}
+            swapRequests={swapRequests}
+            onSelectWorkshop={(w) => setSelectedWorkshopModal(w)}
+            onOpenSwapModal={() => setIsSwapOpen(true)}
+            onOpenPostModal={() => setIsSwapOpen(true)}
+            setCurrentView={setCurrentView}
+          />
+        )}
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        {currentView === 'como-funciona' && (
+          <HowItWorksView 
+            onOpenSwapModal={() => setIsSwapOpen(true)}
+            setCurrentView={setCurrentView}
+          />
+        )}
+
+        {currentView === 'skill-swap' && (
+          <SkillSwapView 
+            swapRequests={swapRequests}
+            onOpenSwapModal={() => setIsSwapOpen(true)}
+          />
+        )}
+
+        {currentView === 'admin' && (
+          <AdminDashboard 
+            workshops={workshops}
+            setWorkshops={setWorkshops}
+            swapRequests={swapRequests}
+            setSwapRequests={setSwapRequests}
+            setCurrentView={setCurrentView}
+          />
+        )}
+      </div>
+
+      {/* Footer */}
+      <Footer setCurrentView={setCurrentView} />
+
+      {/* Conversational AI Widget */}
+      <MamaBot 
+        workshops={workshops}
+        onSelectWorkshop={(w) => setSelectedWorkshopModal(w)}
+      />
+
+      {/* Interactive Modals */}
+      <LoginModal 
+        isOpen={isLoginOpen}
+        onClose={() => setIsLoginOpen(false)}
+      />
+
+      <SwapModal 
+        isOpen={isSwapOpen}
+        onClose={() => setIsSwapOpen(false)}
+        onAddSwap={handleAddSwap}
+      />
+
+      <WorkshopDetailModal 
+        workshop={selectedWorkshopModal}
+        onClose={() => setSelectedWorkshopModal(null)}
+        onRegister={handleWorkshopRegistration}
+      />
+
+    </div>
+  );
 }
-
-export default App
