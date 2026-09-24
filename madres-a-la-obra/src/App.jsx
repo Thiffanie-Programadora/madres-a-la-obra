@@ -33,6 +33,11 @@ function AppContent() {
   const [workshops, setWorkshops] = useState(INITIAL_WORKSHOPS);
   const [swapRequests, setSwapRequests] = useState(INITIAL_SWAP_REQUESTS);
 
+  // Scroll to top automatically on route changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [location.pathname]);
+
   // Load from REST JSON Server if active
   useEffect(() => {
     async function loadData() {

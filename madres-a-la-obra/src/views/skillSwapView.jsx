@@ -5,7 +5,10 @@ import {
 } from 'lucide-react';
 import Boton from '../components/boton';
 
+import { useNavigate } from 'react-router-dom';
+
 export default function SkillSwapView({ swapRequests, onOpenSwapModal }) {
+  const navigate = useNavigate();
   const [filter, setFilter] = useState('all');
 
   const filteredSwaps = swapRequests.filter(req => {
@@ -19,9 +22,17 @@ export default function SkillSwapView({ swapRequests, onOpenSwapModal }) {
       {/* HEADER BANNER */}
       <div className="bg-gradient-to-r from-[#7B008A] via-[#E6007E] to-[#7B008A] text-white p-8 sm:p-12 rounded-3xl shadow-xl space-y-6 text-center sm:text-left relative overflow-hidden">
         <div className="max-w-3xl space-y-4 relative z-10">
-          <span className="bg-[#A3E4D7] text-[#7B008A] font-black text-xs px-3.5 py-1 rounded-full uppercase tracking-wider">
-            Red Sorora & Economía Colaborativa
-          </span>
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <span className="bg-[#A3E4D7] text-[#7B008A] font-black text-xs px-3.5 py-1 rounded-full uppercase tracking-wider">
+              Red Sorora & Economía Colaborativa
+            </span>
+            <button 
+              onClick={() => navigate('/')} 
+              className="bg-white/20 hover:bg-white/30 text-white px-3 py-1 rounded-xl text-xs font-bold transition-all"
+            >
+              ← Volver al Inicio
+            </button>
+          </div>
           <h1 className="text-3xl sm:text-5xl font-black leading-tight tracking-tight">
             Comunidad Skill-Swap de Madres
           </h1>
@@ -31,6 +42,9 @@ export default function SkillSwapView({ swapRequests, onOpenSwapModal }) {
           <div className="pt-2 flex flex-wrap gap-4">
             <Boton variant="mint" size="lg" onClick={onOpenSwapModal} icon={PlusCircle}>
               Publicar mi propuesta de Trueque
+            </Boton>
+            <Boton variant="outline" size="lg" onClick={() => navigate('/talleres')}>
+              Explorar Talleres
             </Boton>
           </div>
         </div>

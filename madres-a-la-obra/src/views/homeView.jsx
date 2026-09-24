@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Search, Filter, Sparkles, Clock, MapPin, Users, Heart, Award, 
   ArrowRight, CheckCircle2, RefreshCw, Scissors, Cake, Smartphone, 
@@ -18,6 +18,15 @@ export default function HomeView({
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [selectedModality, setSelectedModality] = useState('all');
   const [selectedAccess, setSelectedAccess] = useState('all');
+
+  useEffect(() => {
+    if (window.location.pathname.includes('/talleres')) {
+      setTimeout(() => {
+        const elem = document.getElementById('talleres-destacados');
+        elem?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  }, []);
 
   // Filtering workshops
   const filteredWorkshops = workshops.filter(w => {
