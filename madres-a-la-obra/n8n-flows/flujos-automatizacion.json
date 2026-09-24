@@ -1,0 +1,102 @@
+{
+  "name": "Flujos de Automatizacion N8N - Madres a la Obra",
+  "workflows": [
+    {
+      "id": "flow-1-registro",
+      "name": "Flujo 1: Registro de Usuaria con Notificacion Email",
+      "nodes": [
+        {
+          "parameters": {
+            "httpMethod": "POST",
+            "path": "webhook-registro",
+            "options": {}
+          },
+          "name": "Webhook Registro",
+          "type": "n8n-nodes-base.webhook",
+          "typeVersion": 1,
+          "position": [250, 300]
+        },
+        {
+          "parameters": {
+            "url": "http://localhost:3001/usuarios",
+            "sendQuery": true,
+            "queryParameters": {
+              "parameters": [
+                {
+                  "name": "email",
+                  "value": "={{$json.body.email}}"
+                }
+              ]
+            }
+          },
+          "name": "Validar Duplicidad Email",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 1,
+          "position": [450, 300]
+        },
+        {
+          "parameters": {
+            "requestMethod": "POST",
+            "url": "http://localhost:3001/usuarios",
+            "jsonParameters": true,
+            "bodyParametersJson": "={{JSON.stringify($node['Webhook Registro'].json.body)}}"
+          },
+          "name": "Insertar en JSON Server",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 1,
+          "position": [650, 300]
+        },
+        {
+          "parameters": {
+            "fromEmail": "bienvenida@madresalaobra.org",
+            "toEmail": "={{$json.email}}",
+            "subject": "¡Bienvenida a Madres a la Obra!",
+            "text": "Hola {{$json.nombre}}, tu cuenta ha sido creada exitosamente. ¡Comienza a aprender e intercambiar hoy!"
+          },
+          "name": "Enviar Email Bienvenida (SMTP)",
+          "type": "n8n-nodes-base.emailSend",
+          "typeVersion": 1,
+          "position": [850, 300]
+        }
+      ]
+    },
+    {
+      "id": "flow-2-skillswap",
+      "name": "Flujo 2: Solicitud y Matching de Trueque Skill-Swap",
+      "nodes": [
+        {
+          "parameters": {
+            "httpMethod": "POST",
+            "path": "webhook-skillswap",
+            "options": {}
+          },
+          "name": "Webhook Solicitud Trueque",
+          "type": "n8n-nodes-base.webhook",
+          "typeVersion": 1,
+          "position": [250, 500]
+        },
+        {
+          "parameters": {
+            "url": "http://localhost:3001/skillswap",
+            "jsonParameters": true,
+            "bodyParametersJson": "={{JSON.stringify({...$json.body, status: 'Pendiente'})}}"
+          },
+          "name": "Registrar Solicitud Pendiente",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 1,
+          "position": [450, 500]
+        },
+        {
+          "parameters": {
+            "subject": "Nueva Solicitud de Trueque Recibida",
+            "text": "Una usuaria ha mostrado interes en tu habilidad ofrecida: {{$json.offeredSkill}}."
+          },
+          "name": "Notificacion Interna / Email",
+          "type": "n8n-nodes-base.emailSend",
+          "typeVersion": 1,
+          "position": [650, 500]
+        }
+      ]
+    }
+  ]
+}

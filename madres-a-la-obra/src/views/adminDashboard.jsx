@@ -5,6 +5,7 @@ import {
   XCircle, Edit, Trash2, ArrowUpRight, TrendingUp, AlertCircle, Eye, 
   Volume2, ShieldAlert, Check
 } from 'lucide-react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import Boton from '../components/boton';
 
 export default function AdminDashboard({ 
@@ -16,6 +17,15 @@ export default function AdminDashboard({
 }) {
   const [activeTab, setActiveTab] = useState('summary');
   const [searchQuery, setSearchQuery] = useState('');
+
+  // Recharts Chart Data
+  const chartData = [
+    { name: 'Manualidades & Costura', solicitadas: 342, color: '#E6007E' },
+    { name: 'Repostería & Panadería', solicitadas: 260, color: '#7B008A' },
+    { name: 'Marketing Digital', solicitadas: 185, color: '#A3E4D7' },
+    { name: 'Belleza & Cuidados', solicitadas: 120, color: '#2ECC71' },
+    { name: 'Finanzas del Hogar', solicitadas: 88, color: '#F39C12' }
+  ];
 
   // Modal State for New Workshop
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -35,7 +45,6 @@ export default function AdminDashboard({
     accessibilityPhysical: false
   });
 
-  // Action handlers
   const handleApproveSwap = (id) => {
     setSwapRequests(prev => prev.map(req => req.id === id ? { ...req, status: 'Aprobado' } : req));
   };
@@ -53,7 +62,7 @@ export default function AdminDashboard({
   const handleCreateWorkshopSubmit = (e) => {
     e.preventDefault();
     const created = {
-      id: Date.now(),
+      id: Date.now().toString(),
       title: newWorkshopData.title,
       category: newWorkshopData.category,
       facilitator: newWorkshopData.facilitator,
@@ -77,7 +86,7 @@ export default function AdminDashboard({
 
     setWorkshops([created, ...workshops]);
     setIsModalOpen(false);
-    alert('¡Taller creado con éxito en el catálogo maestro!');
+    alert('¡Taller creado con éxito en el catálogo maestro y persistido!');
   };
 
   return (
@@ -86,7 +95,6 @@ export default function AdminDashboard({
       {/* SIDEBAR LEFT */}
       <aside className="w-full lg:w-72 bg-white border-r border-gray-200 p-6 space-y-8 shrink-0">
         
-        {/* Profile Active Badge */}
         <div className="flex items-center gap-3 bg-pink-50/80 p-3.5 rounded-2xl border border-pink-100">
           <img 
             src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80" 
@@ -101,7 +109,6 @@ export default function AdminDashboard({
           </div>
         </div>
 
-        {/* Sidebar Nav items */}
         <nav className="space-y-1">
           {[
             { id: 'summary', label: 'Mi Resumen / Dashboard', icon: LayoutDashboard },
@@ -145,8 +152,6 @@ export default function AdminDashboard({
         
         {/* HEADER BAR */}
         <div className="bg-white p-5 rounded-3xl border border-gray-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
-          
-          {/* Global Search */}
           <div className="w-full md:w-96 relative">
             <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
@@ -158,27 +163,22 @@ export default function AdminDashboard({
             />
           </div>
 
-          {/* Indicators */}
           <div className="flex flex-wrap items-center gap-3">
             <div className="flex items-center gap-2 bg-emerald-50 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-2xl border border-emerald-200">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              Módulo Maestro - Sincronizado
+              Módulo Maestro - JSON Server Sincronizado
             </div>
-
             <div className="bg-purple-50 text-[#7B008A] text-xs font-bold px-3 py-1.5 rounded-2xl border border-purple-200">
               1,248 Usuarias Registradas
             </div>
-
             <div className="bg-pink-50 text-[#E6007E] text-xs font-bold px-3 py-1.5 rounded-2xl border border-pink-200">
               86 Intercambios Activos
             </div>
           </div>
-
         </div>
 
         {/* METRICS & KPIS CARDS */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          
           <div className="bg-white p-6 rounded-3xl border border-pink-100 shadow-sm space-y-2">
             <div className="flex justify-between items-center text-xs font-bold text-gray-500">
               <span>Total Talleres Activos</span>
@@ -216,37 +216,50 @@ export default function AdminDashboard({
             <p className="text-3xl font-black text-gray-900">94.6%</p>
             <span className="text-[11px] font-bold text-amber-600">Horario flexible logrado</span>
           </div>
-
         </div>
 
-        {/* AI INSIGHTS MODULE (SkillAI Insights) */}
-        <div className="bg-gradient-to-r from-purple-900 via-[#7B008A] to-[#E6007E] text-white p-6 sm:p-8 rounded-3xl shadow-xl space-y-6">
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div className="flex items-center gap-3">
-              <div className="p-3 bg-white/10 rounded-2xl backdrop-blur-md">
-                <Sparkles className="w-6 h-6 text-[#A3E4D7]" />
+        {/* VISUALIZATION CHART & SKILLAI INSIGHTS */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          
+          {/* Recharts Bar Chart Container */}
+          <div className="lg:col-span-7 bg-white p-6 rounded-3xl border border-gray-200 shadow-sm space-y-4">
+            <div className="flex justify-between items-center">
+              <h3 className="font-extrabold text-gray-900 text-base">Categorías Más Solicitadas</h3>
+              <span className="text-xs text-gray-500">Actualizado en vivo</span>
+            </div>
+            <div className="h-64 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                  <XAxis dataKey="name" tick={{ fontSize: 10 }} />
+                  <YAxis tick={{ fontSize: 10 }} />
+                  <Tooltip />
+                  <Bar dataKey="solicitadas" fill="#E6007E" radius={[8, 8, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          {/* AI Insights Card */}
+          <div className="lg:col-span-5 bg-gradient-to-r from-purple-900 to-[#7B008A] text-white p-6 rounded-3xl shadow-xl flex flex-col justify-between space-y-4">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Sparkles className="w-5 h-5 text-[#A3E4D7]" />
+                <h4 className="font-black text-sm">SkillAI Insights & Demanda</h4>
               </div>
-              <div>
-                <h3 className="font-extrabold text-lg">SkillAI Insights & Conciliación Horaria</h3>
-                <p className="text-xs text-pink-100">Inteligencia Artificial analizando la demanda en tiempo real.</p>
+              <div className="bg-white/10 p-4 rounded-2xl border border-white/20 space-y-2">
+                <span className="bg-[#A3E4D7] text-[#7B008A] text-[10px] font-black px-2 py-0.5 rounded-full uppercase">
+                  Oportunidad Detectada
+                </span>
+                <p className="text-xs text-pink-100 font-medium leading-relaxed">
+                  "Confección Matutina (+47% en búsquedas en horario de 10:00 a 12:00 hrs coincidiendo con la jornada escolar)."
+                </p>
               </div>
             </div>
-            <Boton variant="mint" size="sm" onClick={() => alert("¡Grupos sugeridos generados automáticamente e invitados por correo!")}>
+            <Boton variant="mint" size="sm" onClick={() => alert("¡Grupos sugeridos generados e invitados!")}>
               Crear Grupos Sugeridos
             </Boton>
           </div>
 
-          <div className="bg-white/10 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-white/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-            <div className="space-y-1">
-              <span className="bg-[#A3E4D7] text-[#7B008A] text-[10px] font-black px-2.5 py-0.5 rounded-full uppercase">
-                Oportunidad Detectada
-              </span>
-              <p className="text-sm font-bold text-white">
-                "Confección Matutina (+47% en búsquedas en horario de 10:00 a 12:00 hrs coincidiendo con la jornada escolar)"
-              </p>
-            </div>
-            <span className="text-xs text-pink-200 shrink-0">Recomendación: Abrir 2 grupos extra.</span>
-          </div>
         </div>
 
         {/* SECTION: CRUD TABLE FOR WORKSHOPS */}
@@ -299,7 +312,7 @@ export default function AdminDashboard({
                     </td>
                     <td className="p-4 text-right space-x-1">
                       <button 
-                        onClick={() => alert(`Editando el taller: ${w.title}`)}
+                        onClick={() => alert(`Editando taller: ${w.title}`)}
                         className="p-1.5 text-gray-500 hover:text-[#7B008A] hover:bg-purple-50 rounded-xl"
                       >
                         <Edit className="w-4 h-4" />
@@ -479,7 +492,6 @@ export default function AdminDashboard({
                 />
               </div>
 
-              {/* Adaptaciones de Accesibilidad */}
               <div className="space-y-2 bg-pink-50 p-4 rounded-2xl border border-pink-100">
                 <span className="font-bold text-gray-800 block">Adaptaciones de Accesibilidad:</span>
                 <div className="flex flex-wrap gap-4">

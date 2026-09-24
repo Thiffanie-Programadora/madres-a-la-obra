@@ -1,0 +1,158 @@
+{
+  "usuarios": [
+    {
+      "id": "u1",
+      "nombre": "Karla Mora",
+      "email": "karla@madresalaobra.org",
+      "password": "123",
+      "rol": "administradora",
+      "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
+      "bio": "Super Administradora y Coordinadora Comunitaria."
+    },
+    {
+      "id": "u2",
+      "nombre": "Sofía Bermúdez",
+      "email": "sofia@madresalaobra.org",
+      "password": "123",
+      "rol": "facilitadora",
+      "avatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
+      "bio": "Facilitadora de Marketing Digital y Redes Sociales."
+    },
+    {
+      "id": "u3",
+      "nombre": "Marta Gómez",
+      "email": "marta@madresalaobra.org",
+      "password": "123",
+      "rol": "participante",
+      "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
+      "bio": "Mamá emprendedora buscando aprender repostería."
+    }
+  ],
+  "talleres": [
+    {
+      "id": "1",
+      "title": "Confección y Costura Básica para Emprender",
+      "category": "Manualidades & Costura",
+      "facilitator": "Karla Mora",
+      "facilitatorRole": "Modista y Mamá de 2",
+      "facilitatorAvatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
+      "image": "https://images.unsplash.com/photo-1528458876861-544fd1761a91?w=800&auto=format&fit=crop&q=80",
+      "modality": "Virtual",
+      "schedule": "Mar y Jue (10:00 - 11:30 AM) - Horario Siesta",
+      "accessType": "Skill-Swap",
+      "spots": 12,
+      "spotsLeft": 3,
+      "accessibility": ["Intérprete LESCO", "Macrotipo", "Flexibilidad 100%"],
+      "description": "Aprende a patrones básicos, arreglos y confección de ropa infantil desde cero usando máquinas domésticas.",
+      "swapWanted": "Clases de Contabilidad o Finanzas Digitales",
+      "status": "Activo"
+    },
+    {
+      "id": "2",
+      "title": "Marketing Digital con Celular para Mamás",
+      "category": "Marketing Digital con Celular",
+      "facilitator": "Sofía Bermúdez",
+      "facilitatorRole": "Especialista en RRSS",
+      "facilitatorAvatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
+      "image": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?w=800&auto=format&fit=crop&q=80",
+      "modality": "Virtual",
+      "schedule": "Lun y Mié (02:00 - 03:30 PM) - Jornada Escolar",
+      "accessType": "Gratuito",
+      "spots": 25,
+      "spotsLeft": 8,
+      "accessibility": ["Subtítulos Automáticos", "Material Grabado"],
+      "description": "Crea contenido atractivo, edita reels con Canva y CapCut solo utilizando tu teléfono inteligente.",
+      "swapWanted": "Gratuito por Alianza Comunitaria",
+      "status": "Activo"
+    },
+    {
+      "id": "3",
+      "title": "Postres y Repostería Creativa Económica",
+      "category": "Repostería & Panadería",
+      "facilitator": "Elena Rostova",
+      "facilitatorRole": "Chef Pastelera",
+      "facilitatorAvatar": "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=150&auto=format&fit=crop&q=80",
+      "image": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop&q=80",
+      "modality": "Presencial",
+      "schedule": "Sábados (09:00 - 11:30 AM) - Taller Comunitario",
+      "accessType": "Skill-Swap",
+      "spots": 10,
+      "spotsLeft": 2,
+      "accessibility": ["Espacio Físico Accesible", "Intérprete LESCO"],
+      "description": "Recetas ricas, rápidas y de bajo costo para vender en el barrio o eventos infantiles.",
+      "swapWanted": "Diseño de Logotipos o Empaques",
+      "status": "Activo"
+    },
+    {
+      "id": "4",
+      "title": "Finanzas del Hogar y Presupuesto Emprendedor",
+      "category": "Finanzas del Hogar",
+      "facilitator": "Ana Lucía Vargas",
+      "facilitatorRole": "Contadora Pública",
+      "facilitatorAvatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
+      "image": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80",
+      "modality": "Virtual",
+      "schedule": "Viernes (10:00 - 11:30 AM) - Asincrónico",
+      "accessType": "Sustentable",
+      "spots": 30,
+      "spotsLeft": 15,
+      "accessibility": ["Macrotipo", "Guías imprimibles"],
+      "description": "Organiza el dinero de la casa y calcula los costos reales de tus productos para cobrar lo justo.",
+      "swapWanted": "Talleres de Manualidades o Tejido",
+      "status": "Activo"
+    }
+  ],
+  "categorias": [
+    { "id": "costura", "nombre": "Manualidades & Costura", "descripcion": "Técnicas de corte, confección y arreglos." },
+    { "id": "reposteria", "nombre": "Repostería & Panadería", "descripcion": "Preparación de postres y recetas familiares." },
+    { "id": "marketing", "nombre": "Marketing Digital con Celular", "descripcion": "Edición y ventas por redes sociales." },
+    { "id": "belleza", "nombre": "Belleza & Cuidados", "descripcion": "Cuidado personal, peinados y cosmetología." },
+    { "id": "finanzas", "nombre": "Finanzas del Hogar", "descripcion": "Presupuestos y costos para emprendimientos." }
+  ],
+  "skillswap": [
+    {
+      "id": "101",
+      "offeredBy": "Marta Castro",
+      "offeredSkill": "Corte de Cabello Básico y Peinados Infantiles",
+      "requestedSkill": "Taller de Contabilidad y Presupuesto",
+      "date": "2026-09-23",
+      "status": "Pendiente",
+      "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "102",
+      "offeredBy": "Lucía Fernández",
+      "offeredSkill": "Clases de Inglés Básico Conversacional",
+      "requestedSkill": "Repostería para Fiestas de Cumpleaños",
+      "date": "2026-09-22",
+      "status": "Aprobado",
+      "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80"
+    }
+  ],
+  "solicitudes": [
+    {
+      "id": "s1",
+      "tallerId": "1",
+      "usuarioId": "u3",
+      "fecha": "2026-09-24",
+      "estado": "Confirmada"
+    }
+  ],
+  "faq": [
+    {
+      "id": "f1",
+      "pregunta": "¿Tiene algún costo participar en la plataforma?",
+      "respuesta": "No, Madres a la Obra es 100% inclusiva. El intercambio de conocimientos (Skill-Swap) es gratuito y sin dinero."
+    },
+    {
+      "id": "f2",
+      "pregunta": "¿Cómo funcionan las clases con LESCO?",
+      "respuesta": "Contamos con intérpretes en vivo en clases seleccionadas y videos subtitulados adaptados en Macrotipo."
+    },
+    {
+      "id": "f3",
+      "pregunta": "¿Puedo tomar talleres si mis hijos están pequeños?",
+      "respuesta": "¡Por supuesto! Los talleres están diseñados en horarios de siesta o de jornada escolar, con grabaciones disponibles 24/7."
+    }
+  ]
+}
