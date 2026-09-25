@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { Search, User, PlusCircle, Volume2, Eye, Type, Menu, X, Shield, Sparkles, Sun, Moon } from 'lucide-react';
+import { Search, User, PlusCircle, Volume2, Eye, Type, Menu, X, Shield, Sparkles, Sun, Moon, LogOut } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 export default function Navbar({ currentView, setCurrentView, accessibility, setAccessibility, onOpenPostModal, onOpenLoginModal }) {
+  const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const increaseFontSize = () => {
@@ -89,13 +91,15 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
               <span>LESCO</span>
             </button>
 
-            <button
-              onClick={() => setCurrentView('admin')}
-              className="ml-2 bg-white/20 hover:bg-white/30 text-white font-semibold text-xs px-2.5 py-0.5 rounded-full flex items-center gap-1 transition-all"
-            >
-              <Shield className="w-3.5 h-3.5" />
-              Panel Admin
-            </button>
+            {user && user.rol === 'administradora' && (
+              <button
+                onClick={() => setCurrentView('admin')}
+                className="ml-2 bg-[#A3E4D7] hover:bg-teal-300 text-[#7B008A] font-extrabold text-xs px-3 py-1 rounded-full flex items-center gap-1 shadow-md transition-all"
+              >
+                <Shield className="w-3.5 h-3.5" />
+                Panel de Administración
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -140,13 +144,37 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
 
           {/* Action Buttons */}
           <div className="hidden sm:flex items-center gap-3">
-            <button
-              onClick={onOpenLoginModal}
-              className="px-4 py-2.5 rounded-2xl border-2 border-[#7B008A] text-[#7B008A] font-bold text-sm hover:bg-purple-50 transition-colors flex items-center gap-1.5"
-            >
-              <User className="w-4 h-4" />
-              <span>Iniciar Sesión</span>
-            </button>
+            {user ? (
+              <div className="flex items-center gap-2 bg-pink-50/80 border border-pink-200 p-1.5 pl-3 rounded-2xl">
+                <span className="text-xs font-bold text-gray-800">
+                  {user.nombre || user.name || user.email}
+                </span>
+                {user.rol === 'administradora' && (
+                  <button
+                    onClick={() => setCurrentView('admin')}
+                    className="px-3 py-1.5 rounded-xl bg-[#7B008A] text-white text-xs font-bold hover:bg-purple-900 transition-all flex items-center gap-1"
+                  >
+                    <Shield className="w-3.5 h-3.5" />
+                    Panel Admin
+                  </button>
+                )}
+                <button
+                  onClick={logout}
+                  title="Cerrar Sesión"
+                  className="p-1.5 text-gray-400 hover:text-red-600 rounded-xl hover:bg-red-50 transition-colors"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={onOpenLoginModal}
+                className="px-4 py-2.5 rounded-2xl border-2 border-[#7B008A] text-[#7B008A] font-bold text-sm hover:bg-purple-50 transition-colors flex items-center gap-1.5"
+              >
+                <User className="w-4 h-4" />
+                <span>Iniciar Sesión</span>
+              </button>
+            )}
 
             <button
               onClick={onOpenPostModal}
