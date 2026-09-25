@@ -1,8 +1,12 @@
 import { request } from './api';
+import { DEFAULT_USERS } from '../data/mockData';
 
 export async function obtenerUsuarios() {
   const data = await request('usuarios');
-  return data || [];
+  if (data && Array.isArray(data) && data.length > 0) {
+    return data;
+  }
+  return DEFAULT_USERS;
 }
 
 export async function loginUser(emailOrUser, password) {

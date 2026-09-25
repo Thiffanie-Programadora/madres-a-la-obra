@@ -219,3 +219,33 @@ export const CATEGORIES = [
   { id: 'belleza', name: 'Belleza & Cuidados', icon: 'Sparkles' },
   { id: 'finanzas', name: 'Finanzas del Hogar', icon: 'DollarSign' }
 ];
+
+export const DEFAULT_USERS = [
+  {
+    id: "u1",
+    nombre: "Thifanie B Mora",
+    email: "thifanie@madresalaobra.com",
+    password: "123410*",
+    rol: "administradora",
+    avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
+    bio: "Super Administradora y Coordinadora General de la Plataforma."
+  },
+  {
+    id: "u2",
+    nombre: "Sofía Bermúdez",
+    email: "sofia@madresalaobra.com",
+    password: "123",
+    rol: "facilitadora",
+    avatar: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
+    bio: "Facilitadora de Marketing Digital y Redes Sociales."
+  },
+  {
+    id: "u3",
+    nombre: "Marta Gómez",
+    email: "marta@madresalaobra.com",
+    password: "123",
+    rol: "participante",
+    avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
+    bio: "Participante activa de la comunidad."
+  }
+];
