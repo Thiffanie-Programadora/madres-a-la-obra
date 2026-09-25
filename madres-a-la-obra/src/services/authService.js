@@ -5,15 +5,26 @@ export async function obtenerUsuarios() {
   return data || [];
 }
 
-export async function loginUser(email, password) {
+export async function loginUser(emailOrUser, password) {
   const usuarios = await obtenerUsuarios();
-  const normalizedEmail = email.trim().toLowerCase();
+  const input = emailOrUser.trim().toLowerCase();
   
-  const user = usuarios.find(u => 
-    (u.email.toLowerCase() === normalizedEmail || 
-     (normalizedEmail === 'thifanie' && u.email === 'thifanie@madresalaobra.com')) && 
-    u.password === password
-  );
+  const user = usuarios.find(u => {
+    const userEmail = (u.email || '').toLowerCase();
+    const userName = (u.nombre || '').toLowerCase();
+    const isPasswordCorrect = u.password === password;
+
+    if (!isPasswordCorrect) return false;
+
+    // Direct email match
+    if (userEmail === input) return true;
+    // Direct name match
+    if (userName === input) return true;
+    // Name prefix match (e.g. "thifanie b", "thifanie b mora", "thifanie")
+    if (userName.startsWith(input) || input.startsWith('thifanie')) return true;
+
+    return false;
+  });
 
   if (!user) {
     throw new Error('Credenciales inválidas. Verifica tu correo y contraseña.');
