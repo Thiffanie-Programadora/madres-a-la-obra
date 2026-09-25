@@ -14,19 +14,29 @@
     background-color: var(--bg-light);
     color: var(--text-dark);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
-    transition: background-color 0.3s ease, color 0.3s ease, font-size 0.2s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 }
 
-/* Accessibility Font Scale Utilities (Macrotipo Visión Reducida) */
+/* Accessibility Font Scale Utilities (Visión Reducida & Macrotipo Real) */
 .font-scale-normal {
-  font-size: 100%;
+  zoom: 1;
 }
+
 .font-scale-large {
-  font-size: 115%;
+  zoom: 1.18;
 }
+
 .font-scale-xlarge {
-  font-size: 130%;
+  zoom: 1.35;
+}
+
+.font-scale-large p, .font-scale-large span, .font-scale-large button, .font-scale-large h1, .font-scale-large h2, .font-scale-large h3, .font-scale-large h4, .font-scale-large input {
+  font-size: 118% !important;
+}
+
+.font-scale-xlarge p, .font-scale-xlarge span, .font-scale-xlarge button, .font-scale-xlarge h1, .font-scale-xlarge h2, .font-scale-xlarge h3, .font-scale-xlarge h4, .font-scale-xlarge input {
+  font-size: 135% !important;
 }
 
 /* Dark Mode Global Overrides */
