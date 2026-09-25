@@ -18,25 +18,17 @@
   }
 }
 
-/* Accessibility Font Scale Utilities (Visión Reducida & Macrotipo Real) */
+/* Accessibility Font Scale Utilities (Máximo 115%) */
 .font-scale-normal {
   zoom: 1;
 }
 
 .font-scale-large {
-  zoom: 1.18;
-}
-
-.font-scale-xlarge {
-  zoom: 1.35;
+  zoom: 1.15;
 }
 
 .font-scale-large p, .font-scale-large span, .font-scale-large button, .font-scale-large h1, .font-scale-large h2, .font-scale-large h3, .font-scale-large h4, .font-scale-large input {
-  font-size: 118% !important;
-}
-
-.font-scale-xlarge p, .font-scale-xlarge span, .font-scale-xlarge button, .font-scale-xlarge h1, .font-scale-xlarge h2, .font-scale-xlarge h3, .font-scale-xlarge h4, .font-scale-xlarge input {
-  font-size: 135% !important;
+  font-size: 115% !important;
 }
 
 /* Dark Mode Global Overrides */

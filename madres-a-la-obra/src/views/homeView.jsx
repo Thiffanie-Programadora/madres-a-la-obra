@@ -117,8 +117,8 @@ export default function HomeView({
                 <p className="text-xs text-gray-500 font-medium">Flexible (Conciliación)</p>
               </div>
               <div className="bg-white p-3 rounded-2xl border border-pink-100 shadow-sm">
-                <p className="text-xl font-black text-[#2ECC71]">Híbrido</p>
-                <p className="text-xs text-gray-500 font-medium">Virtual & Barrio</p>
+                <p className="text-xl font-black text-[#2ECC71]">Virtual</p>
+                <p className="text-xs text-gray-500 font-medium">100% Online & Flexible</p>
               </div>
             </div>
 

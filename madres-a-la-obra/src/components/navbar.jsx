@@ -5,13 +5,11 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const increaseFontSize = () => {
-    if (accessibility.fontSize === 'normal') setAccessibility(prev => ({ ...prev, fontSize: 'large' }));
-    else if (accessibility.fontSize === 'large') setAccessibility(prev => ({ ...prev, fontSize: 'xlarge' }));
+    setAccessibility(prev => ({ ...prev, fontSize: 'large' }));
   };
 
   const decreaseFontSize = () => {
-    if (accessibility.fontSize === 'xlarge') setAccessibility(prev => ({ ...prev, fontSize: 'large' }));
-    else if (accessibility.fontSize === 'large') setAccessibility(prev => ({ ...prev, fontSize: 'normal' }));
+    setAccessibility(prev => ({ ...prev, fontSize: 'normal' }));
   };
 
   const toggleContrast = () => {
@@ -44,7 +42,7 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
           </div>
 
           <div className="flex items-center space-x-3">
-            {/* Font Size A- / A+ Controls */}
+            {/* Font Size A- / A+ Controls (Max 115%) */}
             <div className="flex items-center gap-1 bg-white/10 px-2 py-0.5 rounded">
               <span className="font-semibold mr-1 flex items-center gap-1">
                 <Type className="w-3.5 h-3.5" />
@@ -53,18 +51,18 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
               <button
                 onClick={decreaseFontSize}
                 disabled={accessibility.fontSize === 'normal'}
-                title="Disminuir tamaño de letra"
+                title="Disminuir tamaño de letra (100% Normal)"
                 className="px-1.5 rounded hover:bg-white/20 disabled:opacity-40 font-bold transition-all"
               >
                 A-
               </button>
               <span className="text-[10px] bg-[#A3E4D7] text-[#7B008A] font-extrabold px-1.5 py-0.5 rounded-full">
-                {accessibility.fontSize === 'normal' ? '100%' : accessibility.fontSize === 'large' ? '115%' : '130% Macrotipo'}
+                {accessibility.fontSize === 'normal' ? '100% Normal' : '115% Máx'}
               </span>
               <button
                 onClick={increaseFontSize}
-                disabled={accessibility.fontSize === 'xlarge'}
-                title="Aumentar tamaño de letra (Macrotipo para visión reducida)"
+                disabled={accessibility.fontSize === 'large'}
+                title="Aumentar tamaño de letra (Máximo 115%)"
                 className="px-1.5 rounded hover:bg-white/20 disabled:opacity-40 font-bold transition-all"
               >
                 A+
@@ -79,16 +77,6 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
             >
               {accessibility.darkMode ? <Sun className="w-3.5 h-3.5" /> : <Moon className="w-3.5 h-3.5" />}
               <span>{accessibility.darkMode ? 'Modo Claro' : 'Modo Oscuro'}</span>
-            </button>
-
-            {/* Contrast Toggle */}
-            <button
-              onClick={toggleContrast}
-              title="Alto Contraste"
-              className={`flex items-center gap-1 hover:text-[#A3E4D7] transition-colors font-medium px-2 py-0.5 rounded ${accessibility.highContrast ? 'bg-[#A3E4D7] text-[#7B008A]' : 'bg-white/10'}`}
-            >
-              <Eye className="w-3.5 h-3.5" />
-              <span>Contraste</span>
             </button>
 
             {/* LESCO Toggle */}
