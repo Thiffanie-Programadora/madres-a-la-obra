@@ -26,6 +26,24 @@
       "rol": "participante",
       "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
       "bio": "Mamá emprendedora buscando aprender repostería."
+    },
+    {
+      "id": "u4",
+      "nombre": "Lucía Fernández",
+      "email": "lucia@madresalaobra.org",
+      "password": "123",
+      "rol": "participante",
+      "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80",
+      "bio": "Mamá buscando clases de inglés."
+    },
+    {
+      "id": "u5",
+      "nombre": "Elena Rostova",
+      "email": "elena@madresalaobra.org",
+      "password": "123",
+      "rol": "facilitadora",
+      "avatar": "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=150&auto=format&fit=crop&q=80",
+      "bio": "Chef Pastelera."
     }
   ],
   "talleres": [
@@ -118,96 +136,6 @@
       "description": "Espacio de contención y herramientas prácticas de respiración y hábitos de autocuidado.",
       "swapWanted": "Gratuito Comunitaria",
       "status": "Activo"
-    },
-    {
-      "id": "6",
-      "title": "Panadería Artesanal y Panes Saludables",
-      "category": "Repostería & Panadería",
-      "facilitator": "Carmen Díaz",
-      "facilitatorRole": "Maestra Panadera",
-      "facilitatorAvatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80",
-      "image": "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop&q=80",
-      "modality": "Presencial",
-      "schedule": "Miércoles (09:30 - 11:30 AM) - Horario Siesta",
-      "accessType": "Skill-Swap",
-      "spots": 8,
-      "spotsLeft": 4,
-      "accessibility": ["Espacio Físico Accesible", "Guía Macrotipo"],
-      "description": "Aprende a preparar pan integral, bollos de leche y opciones sin molde ideales para emprender desde casa.",
-      "swapWanted": "Clases de Fotografía o Edición Digital",
-      "status": "Activo"
-    },
-    {
-      "id": "7",
-      "title": "Tejido a Crochet y Amigurumis Creativos",
-      "category": "Manualidades & Costura",
-      "facilitator": "Rosaura Méndez",
-      "facilitatorRole": "Artesana del Tejido",
-      "facilitatorAvatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80",
-      "image": "https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=800&auto=format&fit=crop&q=80",
-      "modality": "Virtual",
-      "schedule": "Martes (02:00 - 03:30 PM) - Jornada Escolar",
-      "accessType": "Skill-Swap",
-      "spots": 15,
-      "spotsLeft": 6,
-      "accessibility": ["Intérprete LESCO", "Video HD Grabado"],
-      "description": "Crea muñecos de crochet (amigurumis) e hilos de algodón para vender en ferias locales o internet.",
-      "swapWanted": "Asesoría en Ventas por WhatsApp",
-      "status": "Activo"
-    },
-    {
-      "id": "8",
-      "title": "Manicura Express y Cuidado de Uñas",
-      "category": "Belleza & Cuidados",
-      "facilitator": "Silvia Muñoz",
-      "facilitatorRole": "Técnica en Manicura",
-      "facilitatorAvatar": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&auto=format&fit=crop&q=80",
-      "image": "https://images.unsplash.com/photo-1604654894610-df63bc536371?w=800&auto=format&fit=crop&q=80",
-      "modality": "Presencial",
-      "schedule": "Sábados (02:00 - 04:00 PM) - Taller de Barrio",
-      "accessType": "Gratuito",
-      "spots": 10,
-      "spotsLeft": 3,
-      "accessibility": ["Espacio Físico Accesible"],
-      "description": "Técnicas de esmaltado duradero, decoración fácil y cuidado de manos para emprender en tu vecindario.",
-      "swapWanted": "Gratuito por Iniciativa Social",
-      "status": "Activo"
-    },
-    {
-      "id": "9",
-      "title": "Fotografía de Productos con Celular y Luz Natural",
-      "category": "Marketing Digital con Celular",
-      "facilitator": "Valeria Arce",
-      "facilitatorRole": "Fotógrafa Comercial",
-      "facilitatorAvatar": "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=150&auto=format&fit=crop&q=80",
-      "image": "https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=800&auto=format&fit=crop&q=80",
-      "modality": "Virtual",
-      "schedule": "Viernes (03:00 - 04:30 PM) - Flexibilidad Total",
-      "accessType": "Skill-Swap",
-      "spots": 20,
-      "spotsLeft": 9,
-      "accessibility": ["Subtítulos Automáticos", "Macrotipo"],
-      "description": "Aprende a tomar fotos profesionales a tus postres, artesanías o ropa usando solo la luz de la ventana.",
-      "swapWanted": "Intercambio por Productos o Repostería",
-      "status": "Activo"
-    },
-    {
-      "id": "10",
-      "title": "Huertos Urbanos y Plantas Aromáticas en Casa",
-      "category": "Manualidades & Costura",
-      "facilitator": "Beatriz Solís",
-      "facilitatorRole": "Educadora Ambiental",
-      "facilitatorAvatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
-      "image": "https://images.unsplash.com/photo-1585320806297-9794b3e4eeae?w=800&auto=format&fit=crop&q=80",
-      "modality": "Presencial",
-      "schedule": "Domingos (10:00 - 12:00 PM) - En Familia",
-      "accessType": "Gratuito",
-      "spots": 15,
-      "spotsLeft": 5,
-      "accessibility": ["Intérprete LESCO", "Espacio Físico Accesible"],
-      "description": "Siembra tomate, albahaca y menta en macetas usando materiales reciclados de la cocina.",
-      "swapWanted": "Gratuito Comunitario",
-      "status": "Activo"
     }
   ],
   "categorias": [
@@ -235,6 +163,15 @@
       "date": "2026-09-22",
       "status": "Aprobado",
       "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80"
+    },
+    {
+      "id": "103",
+      "offeredBy": "Beatriz Solís",
+      "offeredSkill": "Asesoría en Huertos Urbanos y Plantas",
+      "requestedSkill": "Edición de Videos Cortos para Instagram",
+      "date": "2026-09-21",
+      "status": "Completado",
+      "avatar": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&auto=format&fit=crop&q=80"
     }
   ],
   "solicitudes": [
@@ -243,7 +180,14 @@
       "tallerId": "1",
       "usuarioId": "u3",
       "fecha": "2026-09-24",
-      "estado": "Confirmada"
+      "estado": "confirmada"
+    },
+    {
+      "id": "s2",
+      "tallerId": "2",
+      "usuarioId": "u4",
+      "fecha": "2026-09-23",
+      "estado": "pendiente"
     }
   ],
   "faq": [
