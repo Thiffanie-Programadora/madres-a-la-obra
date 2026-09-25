@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 export default function SkillSwapView({ swapRequests, onOpenSwapModal }) {
   const navigate = useNavigate();
-  const [filter, setFilter] = useState('all');
+  const [filter, setFilter] = useState('Aprobado');
 
   const filteredSwaps = swapRequests.filter(req => {
     if (filter === 'all') return true;

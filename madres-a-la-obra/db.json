@@ -2,17 +2,17 @@
   "usuarios": [
     {
       "id": "u1",
-      "nombre": "Karla Mora",
-      "email": "karla@madresalaobra.org",
-      "password": "123",
+      "nombre": "Thifanie",
+      "email": "thifanie@madresalaobra.com",
+      "password": "123410*",
       "rol": "administradora",
       "avatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
-      "bio": "Super Administradora y Coordinadora Comunitaria."
+      "bio": "Super Administradora y Coordinadora General de la Plataforma."
     },
     {
       "id": "u2",
       "nombre": "Sofía Bermúdez",
-      "email": "sofia@madresalaobra.org",
+      "email": "sofia@madresalaobra.com",
       "password": "123",
       "rol": "facilitadora",
       "avatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=80",
@@ -21,29 +21,11 @@
     {
       "id": "u3",
       "nombre": "Marta Gómez",
-      "email": "marta@madresalaobra.org",
+      "email": "marta@madresalaobra.com",
       "password": "123",
       "rol": "participante",
       "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
       "bio": "Mamá emprendedora buscando aprender repostería."
-    },
-    {
-      "id": "u4",
-      "nombre": "Lucía Fernández",
-      "email": "lucia@madresalaobra.org",
-      "password": "123",
-      "rol": "participante",
-      "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80",
-      "bio": "Mamá buscando clases de inglés."
-    },
-    {
-      "id": "u5",
-      "nombre": "Elena Rostova",
-      "email": "elena@madresalaobra.org",
-      "password": "123",
-      "rol": "facilitadora",
-      "avatar": "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=150&auto=format&fit=crop&q=80",
-      "bio": "Chef Pastelera."
     }
   ],
   "talleres": [
@@ -63,7 +45,10 @@
       "accessibility": ["Intérprete LESCO", "Macrotipo", "Flexibilidad 100%"],
       "description": "Aprende patrones básicos, arreglos y confección de ropa infantil desde cero usando máquinas domésticas.",
       "swapWanted": "Clases de Contabilidad o Finanzas Digitales",
-      "status": "Activo"
+      "status": "aprobado",
+      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "slidesUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      "meetingUrl": "https://meet.google.com/abc-defg-hij"
     },
     {
       "id": "2",
@@ -81,7 +66,10 @@
       "accessibility": ["Subtítulos Automáticos", "Material Grabado"],
       "description": "Crea contenido atractivo, edita reels con Canva y CapCut solo utilizando tu teléfono inteligente.",
       "swapWanted": "Gratuito por Alianza Comunitaria",
-      "status": "Activo"
+      "status": "aprobado",
+      "videoUrl": "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      "slidesUrl": "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+      "meetingUrl": "https://meet.google.com/abc-defg-hij"
     },
     {
       "id": "3",
@@ -91,7 +79,7 @@
       "facilitatorRole": "Chef Pastelera",
       "facilitatorAvatar": "https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?w=150&auto=format&fit=crop&q=80",
       "image": "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=800&auto=format&fit=crop&q=80",
-      "modality": "Presencial",
+      "modality": "Virtual",
       "schedule": "Sábados (09:00 - 11:30 AM) - Taller Comunitario",
       "accessType": "Skill-Swap",
       "spots": 10,
@@ -99,43 +87,10 @@
       "accessibility": ["Espacio Físico Accesible", "Intérprete LESCO"],
       "description": "Recetas ricas, rápidas y de bajo costo para vender en el barrio o eventos infantiles.",
       "swapWanted": "Diseño de Logotipos o Empaques",
-      "status": "Activo"
-    },
-    {
-      "id": "4",
-      "title": "Finanzas del Hogar y Presupuesto Emprendedor",
-      "category": "Finanzas del Hogar",
-      "facilitator": "Ana Lucía Vargas",
-      "facilitatorRole": "Contadora Pública",
-      "facilitatorAvatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80",
-      "image": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80",
-      "modality": "Virtual",
-      "schedule": "Viernes (10:00 - 11:30 AM) - Asincrónico",
-      "accessType": "Sustentable",
-      "spots": 30,
-      "spotsLeft": 15,
-      "accessibility": ["Macrotipo", "Guías imprimibles"],
-      "description": "Organiza el dinero de la casa y calcula los costos reales de tus productos para cobrar lo justo.",
-      "swapWanted": "Talleres de Manualidades o Tejido",
-      "status": "Activo"
-    },
-    {
-      "id": "5",
-      "title": "Cuidado Personal, Autoestima y Manejo de Estrés",
-      "category": "Belleza & Cuidados",
-      "facilitator": "Dra. Marcela Campos",
-      "facilitatorRole": "Psicóloga Familiar",
-      "facilitatorAvatar": "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=150&auto=format&fit=crop&q=80",
-      "image": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=800&auto=format&fit=crop&q=80",
-      "modality": "Virtual",
-      "schedule": "Jueves (08:30 - 09:30 PM) - Madrugada Tranquila",
-      "accessType": "Gratuito",
-      "spots": 40,
-      "spotsLeft": 12,
-      "accessibility": ["Intérprete LESCO", "Audio Claro"],
-      "description": "Espacio de contención y herramientas prácticas de respiración y hábitos de autocuidado.",
-      "swapWanted": "Gratuito Comunitaria",
-      "status": "Activo"
+      "status": "pendiente",
+      "videoUrl": "",
+      "slidesUrl": "",
+      "meetingUrl": ""
     }
   ],
   "categorias": [
@@ -152,7 +107,7 @@
       "offeredSkill": "Corte de Cabello Básico y Peinados Infantiles",
       "requestedSkill": "Taller de Contabilidad y Presupuesto",
       "date": "2026-09-23",
-      "status": "Pendiente",
+      "status": "pendiente",
       "avatar": "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
     },
     {
@@ -161,50 +116,16 @@
       "offeredSkill": "Clases de Inglés Básico Conversacional",
       "requestedSkill": "Repostería para Fiestas de Cumpleaños",
       "date": "2026-09-22",
-      "status": "Aprobado",
+      "status": "aprobado",
       "avatar": "https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=80"
-    },
-    {
-      "id": "103",
-      "offeredBy": "Beatriz Solís",
-      "offeredSkill": "Asesoría en Huertos Urbanos y Plantas",
-      "requestedSkill": "Edición de Videos Cortos para Instagram",
-      "date": "2026-09-21",
-      "status": "Completado",
-      "avatar": "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=150&auto=format&fit=crop&q=80"
     }
   ],
-  "solicitudes": [
-    {
-      "id": "s1",
-      "tallerId": "1",
-      "usuarioId": "u3",
-      "fecha": "2026-09-24",
-      "estado": "confirmada"
-    },
-    {
-      "id": "s2",
-      "tallerId": "2",
-      "usuarioId": "u4",
-      "fecha": "2026-09-23",
-      "estado": "pendiente"
-    }
-  ],
+  "solicitudes": [],
   "faq": [
     {
       "id": "f1",
       "pregunta": "¿Tiene algún costo participar en la plataforma?",
       "respuesta": "No, Madres a la Obra es 100% inclusiva. El intercambio de conocimientos (Skill-Swap) es gratuito y sin dinero."
-    },
-    {
-      "id": "f2",
-      "pregunta": "¿Cómo funcionan las clases con LESCO?",
-      "respuesta": "Contamos con intérpretes en vivo en clases seleccionadas y videos subtitulados adaptados en Macrotipo."
-    },
-    {
-      "id": "f3",
-      "pregunta": "¿Puedo tomar talleres si mis hijos están pequeños?",
-      "respuesta": "¡Por supuesto! Los talleres están diseñados en horarios de siesta o de jornada escolar, con grabaciones disponibles 24/7."
     }
   ]
 }

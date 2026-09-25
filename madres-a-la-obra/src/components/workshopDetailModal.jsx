@@ -1,9 +1,23 @@
 import React from 'react';
-import { X } from 'lucide-react';
+import { X, Video, ExternalLink, Presentation, Monitor } from 'lucide-react';
 import Boton from './boton';
 
 export default function WorkshopDetailModal({ workshop, onClose, onRegister }) {
   if (!workshop) return null;
+
+  const getEmbedUrl = (url) => {
+    if (!url) return null;
+    if (url.includes('youtube.com/watch?v=')) {
+      return url.replace('watch?v=', 'embed/');
+    }
+    if (url.includes('youtu.be/')) {
+      const id = url.split('youtu.be/')[1];
+      return `https://www.youtube.com/embed/${id}`;
+    }
+    return url;
+  };
+
+  const embedVideoUrl = getEmbedUrl(workshop.videoUrl);
 
   return (
     <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
@@ -16,7 +30,7 @@ export default function WorkshopDetailModal({ workshop, onClose, onRegister }) {
           <img src={workshop.image} alt={workshop.title} className="w-full h-full object-cover" />
           <div className="absolute top-3 left-3 flex gap-2">
             <span className="bg-[#7B008A] text-white font-bold text-xs px-3 py-1 rounded-full">
-              {workshop.modality}
+              {workshop.modality || 'Virtual'}
             </span>
             <span className="bg-[#A3E4D7] text-[#7B008A] font-extrabold text-xs px-3 py-1 rounded-full">
               {workshop.accessType}
@@ -26,7 +40,7 @@ export default function WorkshopDetailModal({ workshop, onClose, onRegister }) {
 
         <div className="space-y-4">
           <div className="flex items-center gap-2">
-            {workshop.accessibility.map((acc, i) => (
+            {(workshop.accessibility || []).map((acc, i) => (
               <span key={i} className="text-[10px] bg-purple-50 text-[#7B008A] font-bold px-2.5 py-1 rounded-full border border-purple-200">
                 {acc}
               </span>
@@ -56,9 +70,67 @@ export default function WorkshopDetailModal({ workshop, onClose, onRegister }) {
               </p>
             )}
           </div>
+
+          {/* VIRTUAL CLASSROOM & MATERIAL SECTION */}
+          {(workshop.videoUrl || workshop.slidesUrl || workshop.meetingUrl) && (
+            <div className="bg-gradient-to-r from-purple-50 to-pink-50 border-2 border-purple-200 rounded-3xl p-5 space-y-4">
+              <div className="flex items-center gap-2 text-[#7B008A]">
+                <Monitor className="w-5 h-5 text-[#E6007E]" />
+                <h3 className="font-black text-sm">Materiales y Aula Virtual Desbloqueada</h3>
+              </div>
+
+              {/* Embedded Video */}
+              {embedVideoUrl && (
+                <div className="space-y-2">
+                  <span className="text-xs font-bold text-gray-700 flex items-center gap-1">
+                    <Video className="w-4 h-4 text-[#E6007E]" />
+                    Clase Grabada en Video:
+                  </span>
+                  <div className="aspect-video w-full rounded-2xl overflow-hidden border border-purple-200 shadow-md">
+                    <iframe
+                      src={embedVideoUrl}
+                      title={workshop.title}
+                      className="w-full h-full"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* Downloadable Slides & Live Meeting Links */}
+              <div className="flex flex-wrap gap-3 pt-2">
+                {workshop.slidesUrl && (
+                  <a
+                    href={workshop.slidesUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-white text-[#7B008A] hover:bg-purple-100 font-bold text-xs px-4 py-2.5 rounded-2xl border border-purple-200 shadow-sm transition-all"
+                  >
+                    <Presentation className="w-4 h-4 text-[#E6007E]" />
+                    <span>Ver / Descargar Diapositivas</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                )}
+
+                {workshop.meetingUrl && (
+                  <a
+                    href={workshop.meetingUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-2 bg-gradient-to-r from-[#E6007E] to-[#7B008A] text-white hover:opacity-95 font-bold text-xs px-4 py-2.5 rounded-2xl shadow-md transition-all"
+                  >
+                    <Video className="w-4 h-4 text-[#A3E4D7]" />
+                    <span>Unirse a la Clase en Vivo (Meet/Zoom)</span>
+                    <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
-        <div className="flex justify-end gap-3 pt-2">
+        <div className="flex justify-end gap-3 pt-2 border-t border-gray-100">
           <Boton variant="ghost" size="sm" onClick={onClose}>
             Cerrar
           </Boton>

@@ -7,10 +7,18 @@ export async function obtenerUsuarios() {
 
 export async function loginUser(email, password) {
   const usuarios = await obtenerUsuarios();
-  const user = usuarios.find(u => u.email.toLowerCase() === email.toLowerCase() && u.password === password);
+  const normalizedEmail = email.trim().toLowerCase();
+  
+  const user = usuarios.find(u => 
+    (u.email.toLowerCase() === normalizedEmail || 
+     (normalizedEmail === 'thifanie' && u.email === 'thifanie@madresalaobra.com')) && 
+    u.password === password
+  );
+
   if (!user) {
     throw new Error('Credenciales inválidas. Verifica tu correo y contraseña.');
   }
+
   const tokenSimulado = `token_${Date.now()}_${user.id}`;
   return { ...user, tokenSimulado };
 }

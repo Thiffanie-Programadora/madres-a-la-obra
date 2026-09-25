@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { Mail, Lock, Heart } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Mail, Lock, Heart, Eye, EyeOff } from 'lucide-react';
 import Boton from '../../components/boton';
 import { useAuth } from '../../hooks/useAuth';
 import { loginUser } from '../../services/authService';
@@ -14,6 +14,7 @@ export default function Login() {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -51,15 +52,15 @@ export default function Login() {
 
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         <div>
-          <label className="block font-bold text-gray-700 mb-1">Correo Electrónico</label>
+          <label className="block font-bold text-gray-700 mb-1">Correo / Usuario</label>
           <div className="relative">
             <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
-              type="email"
+              type="text"
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="karla@madresalaobra.org"
+              placeholder="thifanie@madresalaobra.com"
               className="w-full pl-10 pr-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#E6007E]"
             />
           </div>
@@ -70,13 +71,20 @@ export default function Login() {
           <div className="relative">
             <Lock className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full pl-10 pr-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#E6007E]"
+              className="w-full pl-10 pr-10 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#E6007E]"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+            </button>
           </div>
         </div>
 
@@ -84,15 +92,6 @@ export default function Login() {
           {loading ? 'Validando Credenciales...' : 'Ingresar a la Red'}
         </Boton>
       </form>
-
-      <div className="text-center pt-2 border-t border-gray-100">
-        <p className="text-xs text-gray-500">
-          ¿Aún no tienes cuenta?{' '}
-          <Link to="/registro" className="text-[#E6007E] font-bold hover:underline">
-            Regístrate Gratis aquí
-          </Link>
-        </p>
-      </div>
     </div>
   );
 }

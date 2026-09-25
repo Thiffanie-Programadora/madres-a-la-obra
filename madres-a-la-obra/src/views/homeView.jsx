@@ -28,8 +28,9 @@ export default function HomeView({
     }
   }, []);
 
-  // Filtering workshops
+  // Filtering workshops (Excludes 'pendiente' and 'rechazado' from public catalog)
   const filteredWorkshops = workshops.filter(w => {
+    const isApproved = w.status !== 'pendiente' && w.status !== 'rechazado' && w.status !== 'Pendiente' && w.status !== 'Rechazado';
     const matchesSearch = w.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
                           w.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           w.facilitator.toLowerCase().includes(searchTerm.toLowerCase());
@@ -38,7 +39,7 @@ export default function HomeView({
     const matchesMod = selectedModality === 'all' || w.modality.toLowerCase() === selectedModality.toLowerCase();
     const matchesAcc = selectedAccess === 'all' || w.accessType.toLowerCase() === selectedAccess.toLowerCase();
 
-    return matchesSearch && matchesCat && matchesMod && matchesAcc;
+    return isApproved && matchesSearch && matchesCat && matchesMod && matchesAcc;
   });
 
   const categoryCards = [

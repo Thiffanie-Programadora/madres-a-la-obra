@@ -32,7 +32,7 @@ export default function AdminDashboard({
   const [newWorkshopData, setNewWorkshopData] = useState({
     title: '',
     category: 'Manualidades & Costura',
-    facilitator: 'Karla Mora',
+    facilitator: 'Thifanie',
     facilitatorRole: 'Docente y Mamá Cuidadora',
     modality: 'Virtual',
     schedule: 'Mar y Jue (10:00 - 11:30 AM)',
@@ -40,6 +40,9 @@ export default function AdminDashboard({
     spots: 15,
     description: '',
     swapWanted: '',
+    videoUrl: '',
+    slidesUrl: '',
+    meetingUrl: '',
     accessibilityLesco: true,
     accessibilityMacrotipo: true,
     accessibilityPhysical: false
@@ -50,7 +53,17 @@ export default function AdminDashboard({
   };
 
   const handleRejectSwap = (id) => {
-    setSwapRequests(prev => prev.map(req => req.id === id ? { ...req, status: 'Rechazado' } : req));
+    const feedback = prompt('Motivo o retroalimentación del rechazo:');
+    setSwapRequests(prev => prev.map(req => req.id === id ? { ...req, status: 'Rechazado', feedback: feedback || 'Rechazado por moderación' } : req));
+  };
+
+  const handleApproveWorkshop = (id) => {
+    setWorkshops(prev => prev.map(w => w.id === id ? { ...w, status: 'aprobado' } : w));
+  };
+
+  const handleRejectWorkshop = (id) => {
+    const feedback = prompt('Motivo o retroalimentación del rechazo:');
+    setWorkshops(prev => prev.map(w => w.id === id ? { ...w, status: 'rechazado', feedback: feedback || 'Rechazado por moderación' } : w));
   };
 
   const handleDeleteWorkshop = (id) => {
@@ -74,6 +87,9 @@ export default function AdminDashboard({
       accessType: newWorkshopData.accessType,
       spots: Number(newWorkshopData.spots),
       spotsLeft: Number(newWorkshopData.spots),
+      videoUrl: newWorkshopData.videoUrl,
+      slidesUrl: newWorkshopData.slidesUrl,
+      meetingUrl: newWorkshopData.meetingUrl,
       accessibility: [
         ...(newWorkshopData.accessibilityLesco ? ["Intérprete LESCO"] : []),
         ...(newWorkshopData.accessibilityMacrotipo ? ["Macrotipo"] : []),
@@ -81,12 +97,12 @@ export default function AdminDashboard({
       ],
       description: newWorkshopData.description,
       swapWanted: newWorkshopData.swapWanted || "Trueque Libre",
-      status: "Activo"
+      status: "aprobado"
     };
 
     setWorkshops([created, ...workshops]);
     setIsModalOpen(false);
-    alert('¡Taller creado con éxito en el catálogo maestro y persistido!');
+    alert('¡Taller creado con éxito en el catálogo maestro!');
   };
 
   return (
@@ -490,6 +506,44 @@ export default function AdminDashboard({
                   placeholder="Detalla lo que enseñaras en el taller..."
                   className="w-full p-3 rounded-2xl bg-gray-50 border border-gray-200 text-xs"
                 />
+              </div>
+
+              {/* Material Didáctico y Formato Virtual */}
+              <div className="space-y-3 bg-purple-50 p-4 rounded-2xl border border-purple-100">
+                <span className="font-bold text-[#7B008A] block">Material Didáctico y Aula Virtual (Enlaces):</span>
+                <div>
+                  <label className="block text-[11px] font-semibold text-gray-700 mb-1">Enlace a Clase en Video (YouTube / Loom / Drive)</label>
+                  <input
+                    type="url"
+                    value={newWorkshopData.videoUrl}
+                    onChange={(e) => setNewWorkshopData({ ...newWorkshopData, videoUrl: e.target.value })}
+                    placeholder="https://www.youtube.com/watch?v=..."
+                    className="w-full p-2.5 rounded-xl bg-white border border-gray-200 text-xs"
+                  />
+                </div>
+
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-[11px] font-semibold text-gray-700 mb-1">Diapositivas / Guía (PDF / Drive)</label>
+                    <input
+                      type="url"
+                      value={newWorkshopData.slidesUrl}
+                      onChange={(e) => setNewWorkshopData({ ...newWorkshopData, slidesUrl: e.target.value })}
+                      placeholder="https://docs.google.com/presentation/..."
+                      className="w-full p-2.5 rounded-xl bg-white border border-gray-200 text-xs"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-semibold text-gray-700 mb-1">Sala de Reunión (Meet / Zoom)</label>
+                    <input
+                      type="url"
+                      value={newWorkshopData.meetingUrl}
+                      onChange={(e) => setNewWorkshopData({ ...newWorkshopData, meetingUrl: e.target.value })}
+                      placeholder="https://meet.google.com/..."
+                      className="w-full p-2.5 rounded-xl bg-white border border-gray-200 text-xs"
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="space-y-2 bg-pink-50 p-4 rounded-2xl border border-pink-100">
