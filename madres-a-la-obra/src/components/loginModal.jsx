@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { X, Heart, Lock, Mail, Eye, EyeOff } from 'lucide-react';
 import Boton from './boton';
 import { useAuth } from '../hooks/useAuth';
 import { loginUser } from '../services/authService';
 
 export default function LoginModal({ isOpen, onClose }) {
+  const navigate = useNavigate();
   const { login } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -21,8 +23,12 @@ export default function LoginModal({ isOpen, onClose }) {
     try {
       const user = await loginUser(email, password);
       login(user);
-      alert(`¡Bienvenida de nuevo ${user.nombre || user.name}!`);
       onClose();
+      if (user.rol === 'administradora') {
+        navigate('/admin');
+      } else {
+        navigate('/perfil');
+      }
     } catch (err) {
       setError(err.message || 'Credenciales inválidas');
     } finally {

@@ -26,7 +26,11 @@ export default function Login() {
     try {
       const user = await loginUser(email, password);
       login(user);
-      navigate(from, { replace: true });
+      if (user.rol === 'administradora') {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate(from !== '/login' ? from : '/', { replace: true });
+      }
     } catch (err) {
       setError(err.message || 'Error al iniciar sesión');
     } finally {

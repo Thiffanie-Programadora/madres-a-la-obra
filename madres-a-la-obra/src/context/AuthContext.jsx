@@ -8,8 +8,8 @@ export function AuthProvider({ children }) {
       const stored = localStorage.getItem('madres_user_session');
       return stored ? JSON.parse(stored) : {
         id: 'u1',
-        nombre: 'Karla Mora',
-        email: 'karla@madresalaobra.org',
+        nombre: 'Thifanie B Mora',
+        email: 'thifanie@madresalaobra.com',
         rol: 'administradora',
         tokenSimulado: 'token_admin_demo',
         avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80'

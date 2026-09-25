@@ -19,6 +19,11 @@ export default function HomeView({
   const [selectedModality, setSelectedModality] = useState('all');
   const [selectedAccess, setSelectedAccess] = useState('all');
 
+  const normalizeStr = (str) => {
+    if (!str) return '';
+    return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  };
+
   useEffect(() => {
     if (window.location.pathname.includes('/talleres')) {
       setTimeout(() => {
@@ -26,18 +31,25 @@ export default function HomeView({
         elem?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
     }
-  }, []);
+  }, [window.location.pathname]);
 
   // Filtering workshops (Excludes 'pendiente' and 'rechazado' from public catalog)
   const filteredWorkshops = workshops.filter(w => {
     const isApproved = w.status !== 'pendiente' && w.status !== 'rechazado' && w.status !== 'Pendiente' && w.status !== 'Rechazado';
-    const matchesSearch = w.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          w.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                          w.facilitator.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesCat = selectedCategory === 'all' || w.category.toLowerCase().includes(selectedCategory.toLowerCase());
-    const matchesMod = selectedModality === 'all' || w.modality.toLowerCase() === selectedModality.toLowerCase();
-    const matchesAcc = selectedAccess === 'all' || w.accessType.toLowerCase() === selectedAccess.toLowerCase();
+    const searchNorm = normalizeStr(searchTerm);
+    const matchesSearch = !searchNorm || 
+                          normalizeStr(w.title).includes(searchNorm) || 
+                          normalizeStr(w.description).includes(searchNorm) ||
+                          normalizeStr(w.facilitator).includes(searchNorm);
+    
+    const catNorm = normalizeStr(selectedCategory);
+    const matchesCat = selectedCategory === 'all' || 
+                       normalizeStr(w.category).includes(catNorm) || 
+                       catNorm.includes(normalizeStr(w.category));
+                       
+    const matchesMod = selectedModality === 'all' || normalizeStr(w.modality) === normalizeStr(selectedModality);
+    const matchesAcc = selectedAccess === 'all' || normalizeStr(w.accessType) === normalizeStr(selectedAccess);
 
     return isApproved && matchesSearch && matchesCat && matchesMod && matchesAcc;
   });
