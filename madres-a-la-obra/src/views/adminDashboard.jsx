@@ -32,7 +32,7 @@ export default function AdminDashboard({
   const [newWorkshopData, setNewWorkshopData] = useState({
     title: '',
     category: 'Manualidades & Costura',
-    facilitator: 'Thifanie',
+    facilitator: 'Thifanie B Mora',
     facilitatorRole: 'Docente y Mamá Cuidadora',
     modality: 'Virtual',
     schedule: 'Mar y Jue (10:00 - 11:30 AM)',

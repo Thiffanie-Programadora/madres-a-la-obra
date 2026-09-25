@@ -56,7 +56,7 @@ export default function AdminUsuarios() {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-black text-gray-900">Gestión de Usuarios & Registro Exclusivo Admin</h1>
-          <p className="text-xs text-gray-500">Solo la Administradora (Thifanie) puede crear y gestionar cuentas de usuarias.</p>
+          <p className="text-xs text-gray-500">Solo la Administradora (Thifanie B Mora) puede crear y gestionar cuentas de usuarias.</p>
         </div>
         <Boton variant="primary" size="md" onClick={() => setIsModalOpen(true)} icon={UserPlus}>
           + Registrar Nueva Usuaria
