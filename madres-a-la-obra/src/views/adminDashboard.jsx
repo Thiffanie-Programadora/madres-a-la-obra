@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import Boton from '../components/boton';
+import AdminLayout from '../components/common/AdminLayout';
 
 export default function AdminDashboard({ 
   workshops, 
@@ -106,65 +107,8 @@ export default function AdminDashboard({
   };
 
   return (
-    <div className="min-h-screen bg-gray-100/70 flex flex-col lg:flex-row">
-      
-      {/* SIDEBAR LEFT */}
-      <aside className="w-full lg:w-72 bg-white border-r border-gray-200 p-6 space-y-8 shrink-0">
-        
-        <div className="flex items-center gap-3 bg-pink-50/80 p-3.5 rounded-2xl border border-pink-100">
-          <img 
-            src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=120&auto=format&fit=crop&q=80" 
-            alt="Karla Mora" 
-            className="w-11 h-11 rounded-2xl object-cover border-2 border-[#E6007E]"
-          />
-          <div>
-            <h4 className="text-xs font-bold text-gray-900">Karla Mora</h4>
-            <span className="text-[10px] font-bold text-[#E6007E] bg-pink-100 px-2 py-0.5 rounded-full inline-block mt-0.5">
-              Super Administradora
-            </span>
-          </div>
-        </div>
-
-        <nav className="space-y-1">
-          {[
-            { id: 'summary', label: 'Mi Resumen / Dashboard', icon: LayoutDashboard },
-            { id: 'workshops', label: 'Talleres y Cursos', icon: BookOpen },
-            { id: 'users', label: 'Usuarias y Roles', icon: Users },
-            { id: 'categories', label: 'Categorías e Íconos', icon: Tags },
-            { id: 'swaps', label: 'Intercambios Skill-Swap', icon: RefreshCw },
-            { id: 'requests', label: 'Solicitudes e Inscripciones', icon: ClipboardList },
-            { id: 'faq', label: 'Preguntas Frecuentes (FAQ)', icon: HelpCircle },
-            { id: 'support', label: 'Métricas de Soporte', icon: Headphones }
-          ].map((item) => {
-            const IconComp = item.icon;
-            const isActive = activeTab === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveTab(item.id)}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-2xl text-xs sm:text-sm font-bold transition-all ${
-                  isActive
-                    ? 'bg-[#7B008A] text-white shadow-md shadow-purple-900/20'
-                    : 'text-gray-600 hover:bg-pink-50 hover:text-[#E6007E]'
-                }`}
-              >
-                <IconComp className={`w-4 h-4 ${isActive ? 'text-[#A3E4D7]' : 'text-gray-400'}`} />
-                <span>{item.label}</span>
-              </button>
-            );
-          })}
-        </nav>
-
-        <div className="pt-6 border-t border-gray-100">
-          <Boton variant="ghost" size="sm" onClick={() => setCurrentView('home')} className="w-full justify-start text-xs">
-            ← Volver a la Vista Pública
-          </Boton>
-        </div>
-
-      </aside>
-
-      {/* MAIN CONTENT AREA */}
-      <main className="flex-1 p-4 sm:p-8 space-y-8 overflow-x-hidden">
+    <AdminLayout>
+      <div className="space-y-8">
         
         {/* HEADER BAR */}
         <div className="bg-white p-5 rounded-3xl border border-gray-200 shadow-sm flex flex-col md:flex-row justify-between items-center gap-4">
@@ -404,8 +348,6 @@ export default function AdminDashboard({
           </div>
         </div>
 
-      </main>
-
       {/* CREATE WORKSHOP MODAL */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
@@ -591,6 +533,7 @@ export default function AdminDashboard({
         </div>
       )}
 
-    </div>
+      </div>
+    </AdminLayout>
   );
 }

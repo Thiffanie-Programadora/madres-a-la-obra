@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Users, Shield, Trash2, Plus, Eye, EyeOff, UserPlus } from 'lucide-react';
 import Boton from '../../components/boton';
+import AdminLayout from '../../components/common/AdminLayout';
 import { obtenerUsuarios, registerUser, eliminarUsuario } from '../../services/authService';
 
 export default function AdminUsuarios() {
@@ -52,16 +53,17 @@ export default function AdminUsuarios() {
   };
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-black text-gray-900">Gestión de Usuarios & Registro Exclusivo Admin</h1>
-          <p className="text-xs text-gray-500">Solo la Administradora (Thifanie B Mora) puede crear y gestionar cuentas de usuarias.</p>
+    <AdminLayout>
+      <div className="space-y-6">
+        <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+          <div>
+            <h1 className="text-2xl font-black text-gray-900">Gestión de Usuarios & Registro Exclusivo Admin</h1>
+            <p className="text-xs text-gray-500">Solo la Administradora (Thifanie B Mora) puede crear y gestionar cuentas de usuarias.</p>
+          </div>
+          <Boton variant="primary" size="md" onClick={() => setIsModalOpen(true)} icon={UserPlus}>
+            + Registrar Nueva Usuaria
+          </Boton>
         </div>
-        <Boton variant="primary" size="md" onClick={() => setIsModalOpen(true)} icon={UserPlus}>
-          + Registrar Nueva Usuaria
-        </Boton>
-      </div>
 
       {/* Users Table */}
       <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm overflow-x-auto">
@@ -202,6 +204,7 @@ export default function AdminUsuarios() {
         </div>
       )}
 
-    </div>
+      </div>
+    </AdminLayout>
   );
 }
