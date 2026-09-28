@@ -12,22 +12,10 @@ import LoginModal from './components/loginModal';
 import SwapModal from './components/swapModal';
 import WorkshopDetailModal from './components/workshopDetailModal';
 
-// Architecture Clean Imports
-import { AuthProvider, AuthContext } from './context/AuthContext';
+import AppRoutes from './routes';
+import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider, ThemeContext } from './context/ThemeContext';
-import ProtectedRoute from './components/common/ProtectedRoute';
 import Loading from './components/common/Loading';
-import AccessDenied from './pages/public/AccessDenied';
-import NotFound from './pages/public/NotFound';
-import Login from './pages/public/Login';
-import Perfil from './pages/user/Perfil';
-import MisInscripciones from './pages/user/MisInscripciones';
-import Mensajes from './pages/user/Mensajes';
-
-import AdminDashboard from './views/adminDashboard';
-import AdminUsuarios from './pages/admin/AdminUsuarios';
-import AdminCategorias from './pages/admin/AdminCategorias';
-import AdminFAQ from './pages/admin/AdminFAQ';
 
 import { INITIAL_WORKSHOPS, INITIAL_SWAP_REQUESTS } from './data/mockData';
 import { obtenerTalleres } from './services/talleresService';
@@ -133,157 +121,15 @@ function AppContent() {
         {loadingData ? (
           <Loading message="Cargando la plataforma inclusiva..." />
         ) : (
-          <Routes>
-            {/* Rutas Públicas */}
-            <Route 
-              path="/" 
-              element={
-                <HomeView 
-                  workshops={workshops}
-                  swapRequests={swapRequests}
-                  onSelectWorkshop={(w) => setSelectedWorkshopModal(w)}
-                  onOpenSwapModal={() => setIsSwapOpen(true)}
-                  onOpenPostModal={() => setIsSwapOpen(true)}
-                  setCurrentView={handleNavClick}
-                />
-              } 
-            />
-
-            <Route 
-              path="/talleres" 
-              element={
-                <HomeView 
-                  workshops={workshops}
-                  swapRequests={swapRequests}
-                  onSelectWorkshop={(w) => setSelectedWorkshopModal(w)}
-                  onOpenSwapModal={() => setIsSwapOpen(true)}
-                  onOpenPostModal={() => setIsSwapOpen(true)}
-                  setCurrentView={handleNavClick}
-                />
-              } 
-            />
-            <Route path="/talleres/:id" element={<HomeView workshops={workshops} swapRequests={swapRequests} onSelectWorkshop={(w) => setSelectedWorkshopModal(w)} onOpenSwapModal={() => setIsSwapOpen(true)} onOpenPostModal={() => setIsSwapOpen(true)} setCurrentView={handleNavClick} />} />
-
-            <Route path="/nosotros" element={<AboutView />} />
-            <Route path="/faq" element={<FaqView />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/acceso-denegado" element={<AccessDenied />} />
-
-            {/* Rutas Autenticadas (Participante / Facilitadora) */}
-            <Route 
-              path="/perfil" 
-              element={
-                <ProtectedRoute allowedRoles={['participante', 'facilitadora', 'administradora']}>
-                  <Perfil />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/mis-inscripciones" 
-              element={
-                <ProtectedRoute allowedRoles={['participante', 'facilitadora', 'administradora']}>
-                  <MisInscripciones />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/skill-swap" 
-              element={
-                <SkillSwapView 
-                  swapRequests={swapRequests}
-                  onOpenSwapModal={() => setIsSwapOpen(true)}
-                />
-              } 
-            />
-            <Route 
-              path="/skill-swap/:id" 
-              element={
-                <SkillSwapView 
-                  swapRequests={swapRequests}
-                  onOpenSwapModal={() => setIsSwapOpen(true)}
-                />
-              } 
-            />
-            <Route 
-              path="/mensajes" 
-              element={
-                <ProtectedRoute allowedRoles={['participante', 'facilitadora', 'administradora']}>
-                  <Mensajes />
-                </ProtectedRoute>
-              } 
-            />
-
-            {/* Rutas de Administración (Administradora) */}
-            <Route 
-              path="/admin" 
-              element={
-                <ProtectedRoute allowedRoles={['administradora']}>
-                  <AdminDashboard 
-                    workshops={workshops}
-                    setWorkshops={setWorkshops}
-                    swapRequests={swapRequests}
-                    setSwapRequests={setSwapRequests}
-                    setCurrentView={handleNavClick}
-                  />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin/usuarios" 
-              element={
-                <ProtectedRoute allowedRoles={['administradora']}>
-                  <AdminUsuarios />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin/talleres" 
-              element={
-                <ProtectedRoute allowedRoles={['administradora']}>
-                  <AdminDashboard 
-                    workshops={workshops}
-                    setWorkshops={setWorkshops}
-                    swapRequests={swapRequests}
-                    setSwapRequests={setSwapRequests}
-                    setCurrentView={handleNavClick}
-                  />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin/categorias" 
-              element={
-                <ProtectedRoute allowedRoles={['administradora']}>
-                  <AdminCategorias />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin/skill-swap" 
-              element={
-                <ProtectedRoute allowedRoles={['administradora']}>
-                  <AdminDashboard 
-                    workshops={workshops}
-                    setWorkshops={setWorkshops}
-                    swapRequests={swapRequests}
-                    setSwapRequests={setSwapRequests}
-                    setCurrentView={handleNavClick}
-                  />
-                </ProtectedRoute>
-              } 
-            />
-            <Route 
-              path="/admin/faq" 
-              element={
-                <ProtectedRoute allowedRoles={['administradora']}>
-                  <AdminFAQ />
-                </ProtectedRoute>
-              } 
-            />
-
-            {/* Ruta 404 NotFound */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
+          <AppRoutes 
+            workshops={workshops}
+            setWorkshops={setWorkshops}
+            swapRequests={swapRequests}
+            setSwapRequests={setSwapRequests}
+            setSelectedWorkshopModal={setSelectedWorkshopModal}
+            setIsSwapOpen={setIsSwapOpen}
+            handleNavClick={handleNavClick}
+          />
         )}
       </div>
 

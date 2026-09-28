@@ -15,8 +15,8 @@ describe('useAuth Hook Unit Tests', () => {
 
   test('Devuelve el estado de autenticación inicial correctamente', () => {
     const { result } = renderHook(() => useAuth(), { wrapper });
-    expect(result.current.user).toBeDefined();
-    expect(result.current.isAuthenticated).toBe(true);
+    expect(result.current.user).toBeNull();
+    expect(result.current.isAuthenticated).toBe(false);
   });
 
   test('Inicia sesión guardando la información en localStorage', () => {

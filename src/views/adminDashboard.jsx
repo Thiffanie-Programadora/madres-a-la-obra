@@ -8,6 +8,7 @@ import {
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import Boton from '../components/boton';
 import AdminLayout from '../components/common/AdminLayout';
+import { crearTaller, eliminarTaller } from '../services/talleresService';
 
 export default function AdminDashboard({ 
   workshops, 
@@ -67,15 +68,16 @@ export default function AdminDashboard({
     setWorkshops(prev => prev.map(w => w.id === id ? { ...w, status: 'rechazado', feedback: feedback || 'Rechazado por moderación' } : w));
   };
 
-  const handleDeleteWorkshop = (id) => {
+  const handleDeleteWorkshop = async (id) => {
     if (confirm('¿Estás segura de eliminar este taller del directorio?')) {
+      await eliminarTaller(id);
       setWorkshops(prev => prev.filter(w => w.id !== id));
     }
   };
 
-  const handleCreateWorkshopSubmit = (e) => {
+  const handleCreateWorkshopSubmit = async (e) => {
     e.preventDefault();
-    const created = {
+    const createdData = {
       id: Date.now().toString(),
       title: newWorkshopData.title,
       category: newWorkshopData.category,
@@ -101,7 +103,8 @@ export default function AdminDashboard({
       status: "aprobado"
     };
 
-    setWorkshops([created, ...workshops]);
+    const result = await crearTaller(createdData);
+    setWorkshops([result || createdData, ...workshops]);
     setIsModalOpen(false);
     alert('¡Taller creado con éxito en el catálogo maestro!');
   };
