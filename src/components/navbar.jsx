@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Search, User, PlusCircle, Volume2, Eye, Type, Menu, X, Shield, Sparkles, Sun, Moon, LogOut } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
+import { ThemeContext } from '../context/ThemeContext';
 
 export default function Navbar({ currentView, setCurrentView, accessibility, setAccessibility, onOpenPostModal, onOpenLoginModal }) {
   const { user, logout } = useAuth();
+  const { toggleVoiceReader } = useContext(ThemeContext) || {};
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const increaseFontSize = () => {
@@ -26,6 +28,10 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
     setAccessibility(prev => ({ ...prev, lescoEnabled: !prev.lescoEnabled }));
   };
 
+  const toggleColorblind = () => {
+    setAccessibility(prev => ({ ...prev, colorblindMode: !prev.colorblindMode }));
+  };
+
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-pink-100 shadow-sm transition-all duration-200">
       {/* Top Accessibility Bar */}
@@ -39,6 +45,16 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
             {accessibility.lescoEnabled && (
               <span className="bg-[#A3E4D7] text-[#7B008A] font-bold px-2 py-0.5 rounded-full text-[10px]">
                 Intérprete LESCO Activo
+              </span>
+            )}
+            {accessibility.colorblindMode && (
+              <span className="bg-[#FFDD00] text-[#004499] font-extrabold px-2.5 py-0.5 rounded-full text-[10px] shadow-sm flex items-center gap-1">
+                👁️ Modo Daltónico Activo
+              </span>
+            )}
+            {accessibility.voiceReaderEnabled && (
+              <span className="bg-amber-300 text-purple-950 font-extrabold px-2.5 py-0.5 rounded-full text-[10px] shadow-sm flex items-center gap-1">
+                🔊 Lector de Voz Activo
               </span>
             )}
           </div>
@@ -70,6 +86,26 @@ export default function Navbar({ currentView, setCurrentView, accessibility, set
                 A+
               </button>
             </div>
+
+            {/* Voice Reader Native Toggle */}
+            <button
+              onClick={toggleVoiceReader}
+              title="Activar Lector de Voz por Síntesis Nativa para Personas No Videntes"
+              className={`flex items-center gap-1 hover:text-[#A3E4D7] transition-colors font-medium px-2 py-0.5 rounded ${accessibility.voiceReaderEnabled ? 'bg-amber-300 text-purple-950 font-extrabold shadow-sm' : 'bg-white/10'}`}
+            >
+              <Volume2 className="w-3.5 h-3.5" />
+              <span>{accessibility.voiceReaderEnabled ? '🔊 Voz (ON)' : '🔊 Lector de Voz'}</span>
+            </button>
+
+            {/* Colorblind Mode Toggle */}
+            <button
+              onClick={toggleColorblind}
+              title="Activar Adaptación de Colores y Alto Contraste para Personas Daltónicas"
+              className={`flex items-center gap-1 hover:text-[#A3E4D7] transition-colors font-medium px-2 py-0.5 rounded ${accessibility.colorblindMode ? 'bg-[#FFDD00] text-[#004499] font-extrabold shadow-sm' : 'bg-white/10'}`}
+            >
+              <Eye className="w-3.5 h-3.5" />
+              <span>{accessibility.colorblindMode ? 'Modo Daltónico (ON)' : 'Modo Daltónico'}</span>
+            </button>
 
             {/* Dark Mode Toggle */}
             <button

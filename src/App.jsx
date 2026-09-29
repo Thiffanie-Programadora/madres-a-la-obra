@@ -87,19 +87,35 @@ function AppContent() {
 
 
   const getFontSizeClass = () => {
-    if (accessibility.fontSize === 'large') return 'font-scale-large';
-    if (accessibility.fontSize === 'xlarge') return 'font-scale-xlarge';
+    if (accessibility?.fontSize === 'large') return 'font-scale-large';
+    if (accessibility?.fontSize === 'xlarge') return 'font-scale-xlarge';
     return 'font-scale-normal';
   };
 
   const getThemeClass = () => {
-    if (accessibility.highContrast) return 'contrast-125 bg-gray-900 text-white';
-    if (accessibility.darkMode) return 'dark bg-slate-950 text-slate-100';
-    return 'bg-[#F8F9FA] text-[#2D3748]';
+    let classes = [];
+    if (accessibility?.colorblindMode) classes.push('daltonico-mode');
+    if (accessibility?.highContrast) classes.push('contrast-125 bg-gray-900 text-white');
+    else if (accessibility?.darkMode) classes.push('dark bg-slate-950 text-slate-100');
+    else classes.push('bg-[#F8F9FA] text-[#2D3748]');
+    return classes.join(' ');
+  };
+
+  const getColorblindStyle = () => {
+    if (accessibility?.colorblindMode) {
+      return {
+        filter: 'hue-rotate(180deg) contrast(130%) saturate(140%)',
+        WebkitFilter: 'hue-rotate(180deg) contrast(130%) saturate(140%)'
+      };
+    }
+    return {};
   };
 
   return (
-    <div className={`min-h-screen flex flex-col font-sans transition-all duration-300 ${getThemeClass()} ${getFontSizeClass()}`}>
+    <div 
+      style={getColorblindStyle()}
+      className={`min-h-screen flex flex-col font-sans transition-all duration-300 ${getThemeClass()} ${getFontSizeClass()}`}
+    >
       
       {/* Header / Navbar */}
       <Navbar 

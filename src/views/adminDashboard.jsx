@@ -521,8 +521,7 @@ export default function AdminDashboard({
                     onChange={(e) => setNewWorkshopData({ ...newWorkshopData, modality: e.target.value })}
                     className="w-full p-3 rounded-2xl bg-gray-50 border border-gray-200 text-xs"
                   >
-                    <option value="Virtual">Virtual</option>
-                    <option value="Presencial">Presencial</option>
+                    <option value="Virtual">Virtual (En línea)</option>
                   </select>
                 </div>
 
@@ -649,8 +648,11 @@ export default function AdminDashboard({
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 border-2 border-pink-200 shadow-2xl relative">
             <div className="flex justify-between items-center border-b border-pink-100 pb-3">
-              <h3 className="text-xl font-black text-gray-900">Coordinar Curso: {editingWorkshop.title}</h3>
-              <button onClick={() => setEditingWorkshop(null)} className="text-gray-400 hover:text-gray-600 font-bold">
+              <div>
+                <span className="text-[10px] font-black text-[#E6007E] uppercase tracking-wider block">Calendario & Coordinación</span>
+                <h3 className="text-xl font-black text-gray-900">{editingWorkshop.title}</h3>
+              </div>
+              <button onClick={() => setEditingWorkshop(null)} className="text-gray-400 hover:text-gray-600 font-bold text-lg">
                 ✕
               </button>
             </div>
@@ -659,20 +661,50 @@ export default function AdminDashboard({
               onSubmit={(e) => {
                 e.preventDefault();
                 setWorkshops(prev => prev.map(item => item.id === editingWorkshop.id ? editingWorkshop : item));
-                alert(`¡Curso "${editingWorkshop.title}" coordinado exitosamente!`);
                 setEditingWorkshop(null);
               }} 
               className="space-y-4 text-xs"
             >
+              {/* Fechas de Inicio y Fin del Curso */}
+              <div className="grid grid-cols-2 gap-3 bg-purple-50 p-4 rounded-2xl border border-purple-100">
+                <div>
+                  <label className="block font-bold text-[#7B008A] mb-1">📅 Fecha de Inicio del Curso</label>
+                  <input
+                    type="date"
+                    value={editingWorkshop.fechaInicio || ''}
+                    onChange={(e) => {
+                      const newFecha = e.target.value;
+                      const updatedSchedule = `${editingWorkshop.schedule || ''} (Inicio: ${newFecha})`;
+                      setEditingWorkshop({ 
+                        ...editingWorkshop, 
+                        fechaInicio: newFecha
+                      });
+                    }}
+                    className="w-full p-2.5 rounded-xl bg-white border border-gray-200 text-xs font-semibold"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-[#7B008A] mb-1">🏁 Fecha de Finalización</label>
+                  <input
+                    type="date"
+                    value={editingWorkshop.fechaFin || ''}
+                    onChange={(e) => setEditingWorkshop({ ...editingWorkshop, fechaFin: e.target.value })}
+                    className="w-full p-2.5 rounded-xl bg-white border border-gray-200 text-xs font-semibold"
+                  />
+                </div>
+              </div>
+
+              {/* Días y Horarios Coordinados */}
               <div>
-                <label className="block font-bold text-gray-700 mb-1">Días y Horarios Coordinados</label>
+                <label className="block font-bold text-gray-700 mb-1">Días de Clase & Horarios Coordinados</label>
                 <input
                   type="text"
                   required
                   value={editingWorkshop.schedule || ''}
                   onChange={(e) => setEditingWorkshop({ ...editingWorkshop, schedule: e.target.value })}
-                  placeholder="ej. Inicia 15 Oct - Mar y Jue (10:00 - 11:30 AM)"
-                  className="w-full p-3 rounded-2xl bg-gray-50 border border-gray-200"
+                  placeholder="ej. Mar y Jue (10:00 - 11:30 AM) - Horario Siesta"
+                  className="w-full p-3 rounded-2xl bg-gray-50 border border-gray-200 text-xs font-bold text-gray-800"
                 />
               </div>
 
@@ -705,10 +737,9 @@ export default function AdminDashboard({
                 <select
                   value={editingWorkshop.modality || 'Virtual'}
                   onChange={(e) => setEditingWorkshop({ ...editingWorkshop, modality: e.target.value })}
-                  className="w-full p-3 rounded-2xl bg-gray-50 border border-gray-200 font-medium"
+                  className="w-full p-3 rounded-2xl bg-gray-50 border border-gray-200 font-medium text-xs"
                 >
                   <option value="Virtual">Virtual (En línea)</option>
-                  <option value="Presencial">Presencial (Sede Comunitaria)</option>
                 </select>
               </div>
 

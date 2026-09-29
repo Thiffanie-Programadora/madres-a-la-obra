@@ -1,6 +1,7 @@
 import React from 'react';
 import { Search, RefreshCw } from 'lucide-react';
 import Boton from '../boton';
+import AnimatedText from '../common/AnimatedText';
 
 export default function HomeHeroSection({ onOpenPostModal, searchTerm, setSearchTerm }) {
   return (
@@ -13,13 +14,13 @@ export default function HomeHeroSection({ onOpenPostModal, searchTerm, setSearch
         <div className="lg:col-span-7 space-y-6 text-left">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white border border-pink-200 shadow-sm text-xs font-bold text-[#E6007E]">
             <span className="w-2.5 h-2.5 rounded-full bg-[#E6007E] animate-ping" />
-            Comunidad Inclusiva de Aprendizaje Directo
+            <AnimatedText text="Comunidad Inclusiva de Aprendizaje Directo" />
           </div>
 
-          <h1 className="text-3xl sm:text-5xl font-black text-gray-900 leading-tight tracking-tight">
-            Aprende, emprende y comparte habilidades{' '}
+          <h1 className="text-3xl sm:text-5xl font-black text-gray-900 leading-tight tracking-tight notranslate" translate="no">
+            <AnimatedText text="Aprende, emprende y comparte habilidades" />{' '}
             <span className="bg-gradient-to-r from-[#E6007E] via-[#7B008A] to-[#E6007E] bg-clip-text text-transparent underline decoration-pink-300 decoration-wavy">
-              sin salir de casa
+              <AnimatedText text="sin salir de casa" />
             </span>.
           </h1>
 
