@@ -2,7 +2,7 @@ import React from 'react';
 import { Search, RefreshCw } from 'lucide-react';
 import Boton from '../boton';
 
-export default function HomeHeroSection({ onOpenPostModal }) {
+export default function HomeHeroSection({ onOpenPostModal, searchTerm, setSearchTerm }) {
   return (
     <section className="relative overflow-hidden pt-8 pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-pink-50/60 via-purple-50/30 to-transparent rounded-b-3xl">
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 rounded-full bg-[#E6007E]/10 blur-3xl pointer-events-none" />
@@ -27,28 +27,49 @@ export default function HomeHeroSection({ onOpenPostModal }) {
             Diseñado exclusivamente para madres cuidadoras. Concilia tu jornada del hogar con talleres 100% flexibles, intercambios directos de saberes (Skill-Swap) sin dinero e intérprete LESCO integrado.
           </p>
 
-          <div className="flex flex-wrap items-center gap-4 pt-2">
-            <Boton 
-              variant="primary" 
-              size="lg" 
-              onClick={() => {
-                const elem = document.getElementById('talleres-destacados');
-                elem?.scrollIntoView({ behavior: 'smooth' });
-              }}
-              icon={Search}
-            >
-              Explorar Talleres
-            </Boton>
+          <div className="pt-2 space-y-4">
+            <div className="flex flex-col sm:flex-row gap-2 max-w-xl">
+              <div className="relative flex-1">
+                <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  value={searchTerm || ''}
+                  placeholder="¿Qué curso o habilidad deseas buscar? (ej. Costura, Marketing, Repostería)..."
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      document.getElementById('talleres-destacados')?.scrollIntoView({ behavior: 'smooth' });
+                    }
+                  }}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3.5 rounded-2xl bg-white border-2 border-pink-200 shadow-md text-sm focus:outline-none focus:ring-2 focus:ring-[#E6007E] text-gray-900 font-medium"
+                />
+              </div>
+              <Boton 
+                variant="primary" 
+                size="lg" 
+                onClick={() => {
+                  document.getElementById('talleres-destacados')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                icon={Search}
+              >
+                Buscar Cursos
+              </Boton>
+            </div>
 
-            <Boton 
-              variant="outlinePurple" 
-              size="lg" 
-              onClick={onOpenPostModal}
-              icon={RefreshCw}
-            >
-              Quiero Enseñar / Ofrecer Trueque
-            </Boton>
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="text-xs text-gray-500 font-bold">O también puedes:</span>
+              <Boton 
+                variant="outlinePurple" 
+                size="sm" 
+                onClick={onOpenPostModal}
+                icon={RefreshCw}
+              >
+                Ofrecer Taller / Trueque
+              </Boton>
+            </div>
           </div>
+
+
 
           <div className="pt-6 grid grid-cols-3 gap-3 border-t border-pink-100">
             <div className="bg-white p-3 rounded-2xl border border-pink-100 shadow-sm">

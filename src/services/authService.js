@@ -3,11 +3,25 @@ import { DEFAULT_USERS } from '../data/mockData';
 
 export async function obtenerUsuarios() {
   const data = await request('usuarios');
-  if (data && Array.isArray(data) && data.length > 0) {
-    return data;
+  let dynamic = [];
+  try {
+    dynamic = JSON.parse(localStorage.getItem('madres_dynamic_users') || '[]');
+  } catch (e) {
+    dynamic = [];
   }
-  return DEFAULT_USERS;
+
+  if (data && Array.isArray(data) && data.length > 0) {
+    // Unir datos de API con usuarios locales agregados
+    const ids = new Set(data.map(u => u.id));
+    const extra = dynamic.filter(u => !ids.has(u.id));
+    return [...data, ...extra];
+  }
+  
+  const ids = new Set(DEFAULT_USERS.map(u => u.id));
+  const extra = dynamic.filter(u => !ids.has(u.id));
+  return [...DEFAULT_USERS, ...extra];
 }
+
 
 export async function loginUser(emailOrUser, password) {
   const usuarios = await obtenerUsuarios();
@@ -49,14 +63,29 @@ export async function registerUser(userData) {
     ...userData,
     avatar: userData.avatar || 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80'
   };
+  
   const creado = await request('usuarios', {
     method: 'POST',
     body: JSON.stringify(nuevoUsuario)
-  }) || nuevoUsuario;
+  });
 
-  const tokenSimulado = `token_${Date.now()}_${creado.id}`;
-  return { ...creado, tokenSimulado };
+  if (!creado) {
+    // Si no hay json-server independiente corriendo en el puerto 3001, guardamos en memoria y en localStorage
+    DEFAULT_USERS.push(nuevoUsuario);
+    try {
+      const storedDynamic = JSON.parse(localStorage.getItem('madres_dynamic_users') || '[]');
+      storedDynamic.push(nuevoUsuario);
+      localStorage.setItem('madres_dynamic_users', JSON.stringify(storedDynamic));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  const result = creado || nuevoUsuario;
+  const tokenSimulado = `token_${Date.now()}_${result.id}`;
+  return { ...result, tokenSimulado };
 }
+
 
 export async function actualizarUsuario(id, userData) {
   return await request(`usuarios/${id}`, {
@@ -66,6 +95,13 @@ export async function actualizarUsuario(id, userData) {
 }
 
 export async function eliminarUsuario(id) {
+  try {
+    const storedDynamic = JSON.parse(localStorage.getItem('madres_dynamic_users') || '[]');
+    const filtered = storedDynamic.filter(u => u.id !== id);
+    localStorage.setItem('madres_dynamic_users', JSON.stringify(filtered));
+  } catch (e) {
+    console.error(e);
+  }
   return await request(`usuarios/${id}`, {
     method: 'DELETE'
   });

@@ -1,9 +1,11 @@
 {
   "name": "Flujos de Automatizacion N8N - Madres a la Obra",
+  "version": "2.0.0",
+  "description": "Flujos de trabajo automatizados para N8N: Registro de Usuarias, Matching Skill-Swap, Inscripciones a Talleres y Moderacion Admin",
   "workflows": [
     {
       "id": "flow-1-registro",
-      "name": "Flujo 1: Registro de Usuaria con Notificacion Email",
+      "name": "Flujo 1: Registro de Usuaria y Correo de Bienvenida",
       "nodes": [
         {
           "parameters": {
@@ -95,6 +97,87 @@
           "type": "n8n-nodes-base.emailSend",
           "typeVersion": 1,
           "position": [650, 500]
+        }
+      ]
+    },
+    {
+      "id": "flow-3-inscripcion-taller",
+      "name": "Flujo 3: Inscripción a Taller y Reserva de Cupo",
+      "nodes": [
+        {
+          "parameters": {
+            "httpMethod": "POST",
+            "path": "webhook-inscripcion",
+            "options": {}
+          },
+          "name": "Webhook Inscripción Taller",
+          "type": "n8n-nodes-base.webhook",
+          "typeVersion": 1,
+          "position": [250, 700]
+        },
+        {
+          "parameters": {
+            "url": "http://localhost:3001/solicitudes",
+            "jsonParameters": true,
+            "bodyParametersJson": "={{JSON.stringify({...$json.body, fecha: new Date().toISOString()})}}"
+          },
+          "name": "Guardar Inscripción en Base de Datos",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 1,
+          "position": [450, 700]
+        },
+        {
+          "parameters": {
+            "fromEmail": "talleres@madresalaobra.org",
+            "toEmail": "={{$json.userEmail}}",
+            "subject": "Confirmación de Inscripción a Taller",
+            "text": "¡Hola! Tu cupo ha sido reservado para el taller: {{$json.workshopTitle}}. Recuerda conectarte en el horario asignado."
+          },
+          "name": "Enviar Confirmación de Cupo",
+          "type": "n8n-nodes-base.emailSend",
+          "typeVersion": 1,
+          "position": [650, 700]
+        }
+      ]
+    },
+    {
+      "id": "flow-4-moderacion-admin",
+      "name": "Flujo 4: Moderación de Contenido y Aprobación Admin",
+      "nodes": [
+        {
+          "parameters": {
+            "httpMethod": "POST",
+            "path": "webhook-moderacion",
+            "options": {}
+          },
+          "name": "Webhook Moderación Admin",
+          "type": "n8n-nodes-base.webhook",
+          "typeVersion": 1,
+          "position": [250, 900]
+        },
+        {
+          "parameters": {
+            "requestMethod": "PATCH",
+            "url": "=http://localhost:3001/skillswap/{{$json.body.id}}",
+            "jsonParameters": true,
+            "bodyParametersJson": "={{JSON.stringify({ status: $json.body.status, feedback: $json.body.feedback })}}"
+          },
+          "name": "Actualizar Estado Trueque",
+          "type": "n8n-nodes-base.httpRequest",
+          "typeVersion": 1,
+          "position": [450, 900]
+        },
+        {
+          "parameters": {
+            "fromEmail": "moderacion@madresalaobra.org",
+            "toEmail": "={{$json.userEmail}}",
+            "subject": "Resolución de Moderación de Solicitud de Trueque",
+            "text": "Tu propuesta de intercambio ha sido resolucionada como: {{$json.status}}. Retroalimentación: {{$json.feedback}}"
+          },
+          "name": "Notificar Resolución a Usuaria",
+          "type": "n8n-nodes-base.emailSend",
+          "typeVersion": 1,
+          "position": [650, 900]
         }
       ]
     }

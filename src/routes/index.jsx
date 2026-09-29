@@ -1,6 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import ProtectedRoute from '../components/common/ProtectedRoute';
+import PublicOnlyRoute from '../components/common/PublicOnlyRoute';
 
 // Dynamic / Modular Page Imports
 import HomeView from '../views/homeView';
@@ -9,9 +10,9 @@ import AboutView from '../views/aboutView';
 import FaqView from '../views/faqView';
 
 import Login from '../pages/public/Login';
-import Registro from '../pages/public/Registro';
 import AccessDenied from '../pages/public/AccessDenied';
 import NotFound from '../pages/public/NotFound';
+
 
 import Perfil from '../pages/user/Perfil';
 import MisInscripciones from '../pages/user/MisInscripciones';
@@ -77,9 +78,18 @@ export default function AppRoutes({
 
       <Route path="/nosotros" element={<AboutView />} />
       <Route path="/faq" element={<FaqView />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/registro" element={<Registro />} />
+
+      {/* Exclusively Public Routes (Auth Only - Redirige si ya inició sesión) */}
+      <Route 
+        path="/login" 
+        element={
+          <PublicOnlyRoute>
+            <Login />
+          </PublicOnlyRoute>
+        } 
+      />
       <Route path="/acceso-denegado" element={<AccessDenied />} />
+
 
       {/* Authenticated Routes (User Roles) */}
       <Route 

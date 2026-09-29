@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+iimport React, { useState } from 'react';
 import { 
   LayoutDashboard, BookOpen, Users, Tags, RefreshCw, ClipboardList, 
   HelpCircle, Headphones, Search, Bell, Sparkles, Plus, CheckCircle, 
   XCircle, Edit, Trash2, ArrowUpRight, TrendingUp, AlertCircle, Eye, 
-  Volume2, ShieldAlert, Check
+  Volume2, ShieldAlert, Check, Award
 } from 'lucide-react';
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
 import Boton from '../components/boton';
@@ -19,6 +19,16 @@ export default function AdminDashboard({
 }) {
   const [activeTab, setActiveTab] = useState('summary');
   const [searchQuery, setSearchQuery] = useState('');
+  const [editingWorkshop, setEditingWorkshop] = useState(null);
+
+  // Certificados State con manejo seguro
+  const [certificados, setCertificados] = useState(() => {
+    try {
+      return JSON.parse(localStorage.getItem('madres_certificados') || '[]');
+    } catch {
+      return [];
+    }
+  });
 
   // Recharts Chart Data
   const chartData = [
@@ -50,6 +60,13 @@ export default function AdminDashboard({
     accessibilityPhysical: false
   });
 
+  const handleCreateUserQuick = () => {
+    if (setCurrentView) {
+      setCurrentView('admin');
+    }
+    window.location.href = '/admin/usuarios';
+  };
+
   const handleApproveSwap = (id) => {
     setSwapRequests(prev => prev.map(req => req.id === id ? { ...req, status: 'Aprobado' } : req));
   };
@@ -59,13 +76,17 @@ export default function AdminDashboard({
     setSwapRequests(prev => prev.map(req => req.id === id ? { ...req, status: 'Rechazado', feedback: feedback || 'Rechazado por moderación' } : req));
   };
 
-  const handleApproveWorkshop = (id) => {
-    setWorkshops(prev => prev.map(w => w.id === id ? { ...w, status: 'aprobado' } : w));
+  const handleApproveCertificado = (certId, nombreEstudiante) => {
+    const updated = certificados.map(c => c.id === certId ? { ...c, estado: 'Aprobado' } : c);
+    setCertificados(updated);
+    localStorage.setItem('madres_certificados', JSON.stringify(updated));
+    alert(`¡Certificado emitido con éxito para ${nombreEstudiante}!`);
   };
 
-  const handleRejectWorkshop = (id) => {
-    const feedback = prompt('Motivo o retroalimentación del rechazo:');
-    setWorkshops(prev => prev.map(w => w.id === id ? { ...w, status: 'rechazado', feedback: feedback || 'Rechazado por moderación' } : w));
+  const handleRejectCertificado = (certId) => {
+    const updated = certificados.map(c => c.id === certId ? { ...c, estado: 'Rechazado' } : c);
+    setCertificados(updated);
+    localStorage.setItem('madres_certificados', JSON.stringify(updated));
   };
 
   const handleDeleteWorkshop = async (id) => {
@@ -127,10 +148,9 @@ export default function AdminDashboard({
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
-            <div className="flex items-center gap-2 bg-emerald-50 text-emerald-800 text-xs font-bold px-3 py-1.5 rounded-2xl border border-emerald-200">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-              Módulo Maestro - JSON Server Sincronizado
-            </div>
+            <Boton variant="mint" size="xs" onClick={handleCreateUserQuick}>
+              + Crear Nuevo Usuario
+            </Boton>
             <div className="bg-purple-50 text-[#7B008A] text-xs font-bold px-3 py-1.5 rounded-2xl border border-purple-200">
               1,248 Usuarias Registradas
             </div>
@@ -138,6 +158,7 @@ export default function AdminDashboard({
               86 Intercambios Activos
             </div>
           </div>
+
         </div>
 
         {/* METRICS & KPIS CARDS */}
@@ -225,6 +246,137 @@ export default function AdminDashboard({
 
         </div>
 
+        {/* SECTION: PENDING SWAP REQUESTS VALIDATION (PRIORIDAD AL INICIAR SESION) */}
+        <div className="bg-white rounded-3xl p-6 border-2 border-pink-300 shadow-lg space-y-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-pink-100 pb-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping" />
+                <h3 className="text-xl font-black text-gray-900">Solicitudes e Inscripciones en Espera de Validación</h3>
+              </div>
+              <p className="text-xs text-gray-500">Revisa y aprueba prioritariamente las propuestas de trueque e inscripciones enviadas por las usuarias.</p>
+            </div>
+            <span className="bg-amber-100 text-amber-900 font-extrabold text-xs px-4 py-1.5 rounded-full border border-amber-300">
+              {swapRequests.filter(r => r.status === 'Pendiente').length} Solicitudes Pendientes
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {swapRequests
+              .filter(req => {
+                if (!searchQuery.trim()) return true;
+                const q = searchQuery.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const offeredBy = (req.offeredBy || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const offeredSkill = (req.offeredSkill || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                const requestedSkill = (req.requestedSkill || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                return offeredBy.includes(q) || offeredSkill.includes(q) || requestedSkill.includes(q);
+              })
+              .map((req) => (
+
+              <div key={req.id} className="p-5 rounded-2xl border-2 border-pink-100 bg-gradient-to-br from-pink-50/40 to-purple-50/40 space-y-3 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <img src={req.avatar} alt={req.offeredBy} className="w-10 h-10 rounded-full border-2 border-[#E6007E]" />
+                    <div>
+                      <h4 className="font-bold text-sm text-gray-900">{req.offeredBy}</h4>
+                      <span className="text-[10px] text-gray-500">Fecha: {req.date}</span>
+                    </div>
+                  </div>
+                  <span className={`text-[10px] font-extrabold px-3 py-1 rounded-full ${
+                    req.status === 'Aprobado' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' :
+                    req.status === 'Rechazado' ? 'bg-red-100 text-red-800 border border-red-300' : 'bg-amber-100 text-amber-900 border border-amber-300 animate-pulse'
+                  }`}>
+                    {req.status}
+                  </span>
+                </div>
+
+                <div className="text-xs space-y-1 bg-white p-3 rounded-xl border border-pink-100 shadow-xs">
+                  <p><strong className="text-[#E6007E]">Detalle / Ofrece:</strong> {req.offeredSkill}</p>
+                  <p><strong className="text-[#7B008A]">Trámite / Solicita:</strong> {req.requestedSkill}</p>
+                </div>
+
+                {req.status === 'Pendiente' && (
+                  <div className="flex gap-2 pt-1">
+                    <button
+                      onClick={() => handleApproveSwap(req.id)}
+                      className="flex-1 bg-[#2ECC71] hover:bg-emerald-600 text-white py-2 rounded-xl text-xs font-black transition-colors flex items-center justify-center gap-1 shadow-sm"
+                    >
+                      <Check className="w-4 h-4" /> Aprobar Solicitud
+                    </button>
+                    <button
+                      onClick={() => handleRejectSwap(req.id)}
+                      className="px-4 bg-red-100 text-red-700 py-2 rounded-xl text-xs font-bold hover:bg-red-200 transition-colors"
+                    >
+                      Rechazar
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* SECTION: CERTIFICADOS DE FINALIZACION PENDIENTES DE APROBACION */}
+        <div className="bg-white rounded-3xl p-6 border-2 border-purple-300 shadow-lg space-y-6">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 border-b border-purple-100 pb-4">
+            <div>
+              <div className="flex items-center gap-2">
+                <Award className="w-5 h-5 text-[#7B008A]" />
+                <h3 className="text-xl font-black text-gray-900">Solicitudes de Certificados de Finalización</h3>
+              </div>
+              <p className="text-xs text-gray-500">Solo la Administración puede revisar y emitir los certificados oficiales solicitados por las estudiantes.</p>
+            </div>
+            <span className="bg-purple-100 text-[#7B008A] font-extrabold text-xs px-4 py-1.5 rounded-full border border-purple-300">
+              {certificados.filter(c => c.estado === 'Pendiente').length} Certificados Pendientes
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {certificados.map((cert) => (
+              <div key={cert.id} className="p-5 rounded-2xl border-2 border-purple-100 bg-gradient-to-br from-purple-50/40 to-pink-50/40 space-y-3 shadow-sm">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="font-extrabold text-sm text-gray-900">{cert.estudianteNombre}</h4>
+                    <span className="text-[10px] text-gray-500">{cert.estudianteEmail}</span>
+                  </div>
+                  <span className={`text-[10px] font-extrabold px-3 py-1 rounded-full ${
+                    cert.estado === 'Aprobado' ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' :
+                    cert.estado === 'Rechazado' ? 'bg-red-100 text-red-800 border border-red-300' : 'bg-amber-100 text-amber-900 border border-amber-300 animate-pulse'
+                  }`}>
+                    {cert.estado}
+                  </span>
+                </div>
+
+                <div className="text-xs space-y-1 bg-white p-3 rounded-xl border border-purple-100">
+                  <p><strong className="text-[#7B008A]">Curso Solicitado:</strong> {cert.cursoTitulo}</p>
+                  <p className="text-[10px] text-gray-400">Fecha de Solicitud: {cert.fechaSolicitud}</p>
+                </div>
+
+                {cert.estado === 'Pendiente' && (
+                  <div className="flex gap-2 pt-1">
+                    <button
+                      onClick={() => handleApproveCertificado(cert.id, cert.estudianteNombre)}
+                      className="flex-1 bg-emerald-600 hover:bg-emerald-700 text-white py-2 rounded-xl text-xs font-black transition-colors flex items-center justify-center gap-1 shadow-sm"
+                    >
+                      <Award className="w-4 h-4" /> Aprobar & Emitir Certificado
+                    </button>
+                    <button
+                      onClick={() => handleRejectCertificado(cert.id)}
+                      className="px-3 bg-red-100 text-red-700 py-2 rounded-xl text-xs font-bold hover:bg-red-200 transition-colors"
+                    >
+                      Rechazar
+                    </button>
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {certificados.length === 0 && (
+              <p className="text-xs text-gray-500 text-center col-span-2 py-4">No hay solicitudes de certificados pendientes por el momento.</p>
+            )}
+          </div>
+        </div>
+
         {/* SECTION: CRUD TABLE FOR WORKSHOPS */}
         <div className="bg-white rounded-3xl p-6 border border-gray-200 shadow-sm space-y-6">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -251,7 +403,18 @@ export default function AdminDashboard({
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
-                {workshops.map((w) => (
+                {workshops
+                  .filter(w => {
+                    if (!searchQuery.trim()) return true;
+                    const q = searchQuery.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    const title = (w.title || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    const fac = (w.facilitator || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    const cat = (w.category || '').toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    const id = (w.id || '').toString().toLowerCase();
+                    return title.includes(q) || fac.includes(q) || cat.includes(q) || id.includes(q);
+                  })
+                  .map((w) => (
+
                   <tr key={w.id} className="hover:bg-pink-50/30 transition-colors">
                     <td className="p-4">
                       <div className="font-bold text-gray-900">{w.title}</div>
@@ -275,11 +438,13 @@ export default function AdminDashboard({
                     </td>
                     <td className="p-4 text-right space-x-1">
                       <button 
-                        onClick={() => alert(`Editando taller: ${w.title}`)}
-                        className="p-1.5 text-gray-500 hover:text-[#7B008A] hover:bg-purple-50 rounded-xl"
+                        onClick={() => setEditingWorkshop(w)}
+                        title="Coordinar Horario, Fechas y Cupos"
+                        className="p-1.5 text-gray-500 hover:text-[#7B008A] hover:bg-purple-50 rounded-xl flex items-center gap-1 font-bold text-[11px]"
                       >
-                        <Edit className="w-4 h-4" />
+                        <Edit className="w-4 h-4" /> Coordinar
                       </button>
+
                       <button 
                         onClick={() => handleDeleteWorkshop(w.id)}
                         className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-xl"
@@ -291,63 +456,6 @@ export default function AdminDashboard({
                 ))}
               </tbody>
             </table>
-          </div>
-        </div>
-
-        {/* SECTION: PENDING SWAP REQUESTS VALIDATION */}
-        <div className="bg-white rounded-3xl p-6 border border-pink-100 shadow-sm space-y-6">
-          <div className="flex justify-between items-center">
-            <div>
-              <h3 className="text-lg font-black text-gray-900">Intercambios Skill-Swap en Espera de Validación</h3>
-              <p className="text-xs text-gray-500">Revisa la equidad de las propuestas comunitarias registradas.</p>
-            </div>
-            <span className="bg-amber-100 text-amber-800 font-bold text-xs px-3 py-1 rounded-full">
-              {swapRequests.filter(r => r.status === 'Pendiente').length} Solicitudes Pendientes
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {swapRequests.map((req) => (
-              <div key={req.id} className="p-5 rounded-2xl border-2 border-gray-100 bg-gray-50/50 space-y-3">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <img src={req.avatar} alt={req.offeredBy} className="w-10 h-10 rounded-full border border-pink-300" />
-                    <div>
-                      <h4 className="font-bold text-sm text-gray-900">{req.offeredBy}</h4>
-                      <span className="text-[10px] text-gray-500">Fecha: {req.date}</span>
-                    </div>
-                  </div>
-                  <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full ${
-                    req.status === 'Aprobado' ? 'bg-emerald-100 text-emerald-800' :
-                    req.status === 'Rechazado' ? 'bg-red-100 text-red-800' : 'bg-amber-100 text-amber-800'
-                  }`}>
-                    {req.status}
-                  </span>
-                </div>
-
-                <div className="text-xs space-y-1 bg-white p-3 rounded-xl border border-gray-200">
-                  <p><strong className="text-pink-600">Ofrece:</strong> {req.offeredSkill}</p>
-                  <p><strong className="text-purple-600">Busca a cambio:</strong> {req.requestedSkill}</p>
-                </div>
-
-                {req.status === 'Pendiente' && (
-                  <div className="flex gap-2 pt-1">
-                    <button
-                      onClick={() => handleApproveSwap(req.id)}
-                      className="flex-1 bg-[#2ECC71] text-white py-2 rounded-xl text-xs font-bold hover:bg-emerald-600 transition-colors flex items-center justify-center gap-1"
-                    >
-                      <Check className="w-4 h-4" /> Aprobar Intercambio
-                    </button>
-                    <button
-                      onClick={() => handleRejectSwap(req.id)}
-                      className="px-3 bg-red-100 text-red-700 py-2 rounded-xl text-xs font-bold hover:bg-red-200 transition-colors"
-                    >
-                      Rechazar
-                    </button>
-                  </div>
-                )}
-              </div>
-            ))}
           </div>
         </div>
 
@@ -431,13 +539,13 @@ export default function AdminDashboard({
               </div>
 
               <div>
-                <label className="block font-bold text-gray-700 mb-1">Horario Compatible (Siesta/Escolar)</label>
+                <label className="block font-bold text-gray-700 mb-1">Horario & Fecha Compatible (Siesta/Escolar/Inicio)</label>
                 <input
                   type="text"
                   required
                   value={newWorkshopData.schedule}
                   onChange={(e) => setNewWorkshopData({ ...newWorkshopData, schedule: e.target.value })}
-                  placeholder="ej. Mar y Jue (10:00 - 11:30 AM) - Horario Siesta"
+                  placeholder="ej. Inicia 15 Oct - Mar y Jue (10:00 - 11:30 AM)"
                   className="w-full p-3 rounded-2xl bg-gray-50 border border-gray-200 text-xs"
                 />
               </div>
@@ -529,6 +637,87 @@ export default function AdminDashboard({
                 </Boton>
                 <Boton variant="primary" size="sm" type="submit">
                   Guardar y Publicar
+                </Boton>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* EDIT/COORDINATE WORKSHOP MODAL */}
+      {editingWorkshop && (
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl max-w-lg w-full p-6 sm:p-8 space-y-6 border-2 border-pink-200 shadow-2xl relative">
+            <div className="flex justify-between items-center border-b border-pink-100 pb-3">
+              <h3 className="text-xl font-black text-gray-900">Coordinar Curso: {editingWorkshop.title}</h3>
+              <button onClick={() => setEditingWorkshop(null)} className="text-gray-400 hover:text-gray-600 font-bold">
+                ✕
+              </button>
+            </div>
+
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                setWorkshops(prev => prev.map(item => item.id === editingWorkshop.id ? editingWorkshop : item));
+                alert(`¡Curso "${editingWorkshop.title}" coordinado exitosamente!`);
+                setEditingWorkshop(null);
+              }} 
+              className="space-y-4 text-xs"
+            >
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">Días y Horarios Coordinados</label>
+                <input
+                  type="text"
+                  required
+                  value={editingWorkshop.schedule || ''}
+                  onChange={(e) => setEditingWorkshop({ ...editingWorkshop, schedule: e.target.value })}
+                  placeholder="ej. Inicia 15 Oct - Mar y Jue (10:00 - 11:30 AM)"
+                  className="w-full p-3 rounded-2xl bg-gray-50 border border-gray-200"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Cupos Disponibles Libres</label>
+                  <input
+                    type="number"
+                    min="0"
+                    value={editingWorkshop.spotsLeft || 0}
+                    onChange={(e) => setEditingWorkshop({ ...editingWorkshop, spotsLeft: Number(e.target.value) })}
+                    className="w-full p-3 rounded-2xl bg-gray-50 border border-gray-200"
+                  />
+                </div>
+
+                <div>
+                  <label className="block font-bold text-gray-700 mb-1">Cupos Totales de Aula</label>
+                  <input
+                    type="number"
+                    min="1"
+                    value={editingWorkshop.spots || 0}
+                    onChange={(e) => setEditingWorkshop({ ...editingWorkshop, spots: Number(e.target.value) })}
+                    className="w-full p-3 rounded-2xl bg-gray-50 border border-gray-200"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block font-bold text-gray-700 mb-1">Modalidad de Impartición</label>
+                <select
+                  value={editingWorkshop.modality || 'Virtual'}
+                  onChange={(e) => setEditingWorkshop({ ...editingWorkshop, modality: e.target.value })}
+                  className="w-full p-3 rounded-2xl bg-gray-50 border border-gray-200 font-medium"
+                >
+                  <option value="Virtual">Virtual (En línea)</option>
+                  <option value="Presencial">Presencial (Sede Comunitaria)</option>
+                </select>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-3">
+                <Boton variant="ghost" size="sm" type="button" onClick={() => setEditingWorkshop(null)}>
+                  Cancelar
+                </Boton>
+                <Boton variant="primary" size="sm" type="submit">
+                  Guardar Coordinación
                 </Boton>
               </div>
             </form>

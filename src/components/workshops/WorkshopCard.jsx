@@ -79,12 +79,13 @@ export default function WorkshopCard({ workshop, onSelectWorkshop }) {
         </div>
 
         <Boton 
-          variant={w.accessType === 'Skill-Swap' ? 'primary' : 'secondary'} 
+          variant="primary" 
           size="sm"
           onClick={() => onSelectWorkshop(w)}
         >
-          {w.accessType === 'Skill-Swap' ? 'Solicitar Trueque' : 'Inscribirme'}
+          Llenar Formulario
         </Boton>
+
       </div>
     </div>
   );

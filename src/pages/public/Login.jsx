@@ -12,6 +12,7 @@ export default function Login() {
   
   const from = location.state?.from?.pathname || '/';
 
+  const [tipoAcceso, setTipoAcceso] = useState('escolar'); // 'escolar' | 'administrativo'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -26,7 +27,7 @@ export default function Login() {
     try {
       const user = await loginUser(email, password);
       login(user);
-      if (user.rol === 'administradora') {
+      if (tipoAcceso === 'administrativo' || user.rol === 'administradora') {
         navigate('/admin', { replace: true });
       } else {
         navigate(from !== '/login' ? from : '/', { replace: true });
@@ -45,7 +46,37 @@ export default function Login() {
           <Heart className="w-7 h-7 text-[#A3E4D7] fill-[#A3E4D7]" />
         </div>
         <h1 className="text-2xl sm:text-3xl font-black text-gray-900">Iniciar Sesión</h1>
-        <p className="text-xs text-gray-500">Ingresa a tu cuenta para conciliar, aprender e intercambiar.</p>
+        <p className="text-xs text-gray-500">Selecciona tu perfil de acceso a la plataforma.</p>
+      </div>
+
+      {/* SELECTOR DESLIZABLE (SLIDING TOGGLE TABS) */}
+      <div className="relative bg-gray-100 p-1.5 rounded-2xl flex items-center border border-gray-200">
+        {/* Deslizador animado */}
+        <div 
+          className={`absolute top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-gradient-to-r ${
+            tipoAcceso === 'escolar' ? 'from-[#E6007E] to-pink-500 left-1.5' : 'from-[#7B008A] to-purple-800 left-[calc(50%+3px)]'
+          } rounded-xl shadow-md transition-all duration-300 ease-in-out`} 
+        />
+        
+        <button
+          type="button"
+          onClick={() => { setTipoAcceso('escolar'); setError(null); }}
+          className={`flex-1 py-2.5 text-center text-xs font-black z-10 transition-colors duration-200 ${
+            tipoAcceso === 'escolar' ? 'text-white' : 'text-gray-600 hover:text-gray-900'
+          }`}
+        >
+          🎓 Estudiantes
+        </button>
+
+        <button
+          type="button"
+          onClick={() => { setTipoAcceso('administrativo'); setError(null); }}
+          className={`flex-1 py-2.5 text-center text-xs font-black z-10 transition-colors duration-200 ${
+            tipoAcceso === 'administrativo' ? 'text-white' : 'text-gray-600 hover:text-gray-900'
+          }`}
+        >
+          ⚙️ Administrativo
+        </button>
       </div>
 
       {error && (
@@ -56,7 +87,9 @@ export default function Login() {
 
       <form onSubmit={handleSubmit} className="space-y-4 text-xs">
         <div>
-          <label className="block font-bold text-gray-700 mb-1">Correo / Usuario</label>
+          <label className="block font-bold text-gray-700 mb-1">
+            {tipoAcceso === 'escolar' ? 'Correo o Matrícula Escolar' : 'Correo Administrativo'}
+          </label>
           <div className="relative">
             <Mail className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400" />
             <input
@@ -64,7 +97,7 @@ export default function Login() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="thifanie@madresalaobra.com"
+              placeholder={tipoAcceso === 'escolar' ? "marta@madresalaobra.com" : "thifanie@madresalaobra.com"}
               className="w-full pl-10 pr-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 focus:ring-2 focus:ring-[#E6007E]"
             />
           </div>
@@ -92,8 +125,14 @@ export default function Login() {
           </div>
         </div>
 
-        <Boton variant="primary" size="lg" type="submit" disabled={loading} className="w-full">
-          {loading ? 'Validando Credenciales...' : 'Ingresar a la Red'}
+        <Boton 
+          variant={tipoAcceso === 'escolar' ? "primary" : "mint"} 
+          size="lg" 
+          type="submit" 
+          disabled={loading} 
+          className="w-full font-black"
+        >
+          {loading ? 'Validando Credenciales...' : tipoAcceso === 'escolar' ? 'Ingresar como Estudiante' : 'Acceder al Panel Administrativo'}
         </Boton>
       </form>
     </div>

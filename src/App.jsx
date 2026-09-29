@@ -26,32 +26,22 @@ function AppContent() {
   const location = useLocation();
   const { accessibility, setAccessibility } = useContext(ThemeContext);
 
-  // Data State
+  // Data State conectado directamente a db.json
   const [workshops, setWorkshops] = useState(INITIAL_WORKSHOPS);
   const [swapRequests, setSwapRequests] = useState(INITIAL_SWAP_REQUESTS);
   const [loadingData, setLoadingData] = useState(false);
+
+  // Mantener actualizado si cambia db.json mediante HMR de Vite
+  useEffect(() => {
+    setWorkshops(INITIAL_WORKSHOPS);
+    setSwapRequests(INITIAL_SWAP_REQUESTS);
+  }, [INITIAL_WORKSHOPS, INITIAL_SWAP_REQUESTS]);
 
   // Scroll to top automatically on route changes
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [location.pathname]);
 
-  // Load from REST JSON Server API
-  useEffect(() => {
-    async function loadData() {
-      setLoadingData(true);
-      const apiTalleres = await obtenerTalleres();
-      if (apiTalleres && apiTalleres.length > 0) {
-        setWorkshops(apiTalleres);
-      }
-      const apiSwaps = await obtenerSkillSwaps();
-      if (apiSwaps && apiSwaps.length > 0) {
-        setSwapRequests(apiSwaps);
-      }
-      setLoadingData(false);
-    }
-    loadData();
-  }, []);
 
   // Modal Controls
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -76,20 +66,25 @@ function AppContent() {
     else if (id === 'admin') navigate('/admin');
   };
 
-  const handleWorkshopRegistration = (workshop) => {
-    setWorkshops(prev => prev.map(w => {
-      if (w.id === workshop.id && w.spotsLeft > 0) {
-        return { ...w, spotsLeft: w.spotsLeft - 1 };
-      }
-      return w;
-    }));
-    alert(`¡Inscripción exitosa al taller "${workshop.title}"! Confirmación registrada.`);
+  const handleWorkshopRegistration = (workshopWithApplicant) => {
+    const newSwapRequest = {
+      id: Date.now().toString(),
+      offeredBy: workshopWithApplicant.solicitanteNombre || "Usuaria Interesada",
+      offeredSkill: workshopWithApplicant.solicitanteTrueque || "Solicitud de Cupo Directo",
+      requestedSkill: `Inscripción Taller: ${workshopWithApplicant.title}`,
+      date: new Date().toISOString().split('T')[0],
+      status: "Pendiente",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80"
+    };
+
+    setSwapRequests([newSwapRequest, ...swapRequests]);
     setSelectedWorkshopModal(null);
   };
 
   const handleAddSwap = (newSwap) => {
     setSwapRequests([newSwap, ...swapRequests]);
   };
+
 
   const getFontSizeClass = () => {
     if (accessibility.fontSize === 'large') return 'font-scale-large';

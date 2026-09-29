@@ -15,7 +15,7 @@ export const ProtectedRoute = ({ children, allowedRoles }) => {
 
   // Si el rol del usuario no está permitido para esta ruta
   if (allowedRoles && !allowedRoles.includes(user.rol)) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/acceso-denegado" replace />;
   }
 
   return children;

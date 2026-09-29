@@ -8,6 +8,7 @@ import { loginUser } from '../services/authService';
 export default function LoginModal({ isOpen, onClose }) {
   const navigate = useNavigate();
   const { login } = useAuth();
+  const [tipoAcceso, setTipoAcceso] = useState('escolar'); // 'escolar' | 'administrativo'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -24,7 +25,7 @@ export default function LoginModal({ isOpen, onClose }) {
       const user = await loginUser(email, password);
       login(user);
       onClose();
-      if (user.rol === 'administradora') {
+      if (tipoAcceso === 'administrativo' || user.rol === 'administradora') {
         navigate('/admin');
       } else {
         navigate('/perfil');
@@ -48,7 +49,34 @@ export default function LoginModal({ isOpen, onClose }) {
             <Heart className="w-6 h-6 text-[#A3E4D7] fill-[#A3E4D7]" />
           </div>
           <h3 className="text-2xl font-black text-gray-900">Iniciar Sesión</h3>
-          <p className="text-xs text-gray-500">Accede a tus talleres inscritos y solicitudes de trueque activas.</p>
+          <p className="text-xs text-gray-500">Selecciona tu perfil de acceso a la plataforma.</p>
+        </div>
+
+        {/* SELECTOR DESLIZABLE */}
+        <div className="relative bg-gray-100 p-1.5 rounded-2xl flex items-center border border-gray-200">
+          <div 
+            className={`absolute top-1.5 bottom-1.5 w-[calc(50%-6px)] bg-gradient-to-r ${
+              tipoAcceso === 'escolar' ? 'from-[#E6007E] to-pink-500 left-1.5' : 'from-[#7B008A] to-purple-800 left-[calc(50%+3px)]'
+            } rounded-xl shadow-md transition-all duration-300 ease-in-out`} 
+          />
+          <button
+            type="button"
+            onClick={() => { setTipoAcceso('escolar'); setError(null); }}
+            className={`flex-1 py-2 text-center text-xs font-black z-10 transition-colors duration-200 ${
+              tipoAcceso === 'escolar' ? 'text-white' : 'text-gray-600'
+            }`}
+          >
+            🎓 Estudiantes
+          </button>
+          <button
+            type="button"
+            onClick={() => { setTipoAcceso('administrativo'); setError(null); }}
+            className={`flex-1 py-2 text-center text-xs font-black z-10 transition-colors duration-200 ${
+              tipoAcceso === 'administrativo' ? 'text-white' : 'text-gray-600'
+            }`}
+          >
+            ⚙️ Administrativo
+          </button>
         </div>
 
         {error && (

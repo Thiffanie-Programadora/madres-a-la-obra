@@ -34,6 +34,7 @@
       "title": "Confección y Costura Básica para Emprender",
       "category": "Manualidades & Costura",
       "facilitator": "Karla Mora",
+
       "facilitatorRole": "Modista y Mamá de 2",
       "facilitatorAvatar": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&auto=format&fit=crop&q=80",
       "image": "https://images.unsplash.com/photo-1528458876861-544fd1761a91?w=800&auto=format&fit=crop&q=80",
@@ -87,12 +88,13 @@
       "accessibility": ["Espacio Físico Accesible", "Intérprete LESCO"],
       "description": "Recetas ricas, rápidas y de bajo costo para vender en el barrio o eventos infantiles.",
       "swapWanted": "Diseño de Logotipos o Empaques",
-      "status": "pendiente",
+      "status": "aprobado",
       "videoUrl": "",
       "slidesUrl": "",
       "meetingUrl": ""
     }
   ],
+
   "categorias": [
     { "id": "costura", "nombre": "Manualidades & Costura", "descripcion": "Técnicas de corte, confección y arreglos." },
     { "id": "reposteria", "nombre": "Repostería & Panadería", "descripcion": "Preparación de postres y recetas familiares." },

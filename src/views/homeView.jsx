@@ -36,15 +36,17 @@ export default function HomeView({
     }
   }, [window.location.pathname]);
 
-  // Filtering workshops (Excludes 'pendiente' and 'rechazado' from public catalog)
+  // Filtering workshops (Muestra talleres activos/aprobados o sin filtro estricto de estado administrativo)
   const filteredWorkshops = workshops.filter(w => {
-    const isApproved = w.status !== 'pendiente' && w.status !== 'rechazado' && w.status !== 'Pendiente' && w.status !== 'Rechazado';
+    const statusNorm = normalizeStr(w.status || 'activo');
+    const isApproved = !statusNorm || statusNorm === 'activo' || statusNorm === 'aprobado' || statusNorm === 'active';
     
     const searchNorm = normalizeStr(searchTerm);
     const matchesSearch = !searchNorm || 
                           normalizeStr(w.title).includes(searchNorm) || 
                           normalizeStr(w.description).includes(searchNorm) ||
-                          normalizeStr(w.facilitator).includes(searchNorm);
+                          normalizeStr(w.facilitator).includes(searchNorm) ||
+                          normalizeStr(w.category).includes(searchNorm);
     
     const catNorm = normalizeStr(selectedCategory);
     const matchesCat = selectedCategory === 'all' || 
@@ -57,6 +59,7 @@ export default function HomeView({
     return isApproved && matchesSearch && matchesCat && matchesMod && matchesAcc;
   });
 
+
   const categoryCards = [
     { id: 'costura', name: 'Manualidades & Costura', icon: Scissors, color: 'from-pink-500 to-rose-400', count: '18 talleres' },
     { id: 'reposteria', name: 'Repostería & Panadería', icon: Cake, color: 'from-[#7B008A] to-purple-500', count: '24 talleres' },
@@ -68,7 +71,12 @@ export default function HomeView({
   return (
     <div className="space-y-16 pb-12">
       {/* HERO SECTION COMPONENT */}
-      <HomeHeroSection onOpenPostModal={onOpenPostModal} />
+      <HomeHeroSection 
+        onOpenPostModal={onOpenPostModal} 
+        searchTerm={searchTerm}
+        setSearchTerm={setSearchTerm}
+      />
+
 
       {/* INTERACTIVE SEARCH BAR & FILTERS */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 -mt-6">
@@ -79,6 +87,7 @@ export default function HomeView({
             <div className="flex-1 relative">
               <Search className="w-5 h-5 absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" />
               <input
+                id="search-input-main"
                 type="text"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
@@ -86,6 +95,7 @@ export default function HomeView({
                 className="w-full pl-12 pr-4 py-3 rounded-2xl bg-gray-50 border border-gray-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#E6007E] text-gray-800"
               />
             </div>
+
 
             {/* Category Filter */}
             <div className="w-full md:w-52">

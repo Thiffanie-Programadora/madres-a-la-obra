@@ -35,7 +35,7 @@ export default function AboutView() {
           <Award className="w-8 h-8 text-emerald-600" />
           <h3 className="font-bold text-lg text-gray-900">Inclusión LESCO & Accesibilidad</h3>
           <p className="text-xs text-gray-600 leading-relaxed">
-            Garantizamos intérpretes LESCO en vivo y contenidos en macrotipo para que la educación sea accesibles para todas.
+            Garantizamos intérpretes LESCO en vivo y contenidos en macrotipo para que la educación sea accesible para todas.
           </p>
         </div>
       </div>
